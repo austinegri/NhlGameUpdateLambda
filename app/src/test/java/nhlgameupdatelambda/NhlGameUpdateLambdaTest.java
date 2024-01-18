@@ -2,6 +2,7 @@ package nhlgameupdatelambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
+import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
 import nhlgameupdatelambda.testHelpers.TestContext;
 import org.junit.After;
 import org.junit.Before;
@@ -16,8 +17,8 @@ public class NhlGameUpdateLambdaTest {
 
     private NhlGameUpdateLambda underTest;
 
-    private String expectedResponse;
-    private String actualResponse;
+    private NhlGameTodayLambdaResponse expectedResponse;
+    private NhlGameTodayLambdaResponse actualResponse;
 
     @Before
     public void setup() {
@@ -42,7 +43,10 @@ public class NhlGameUpdateLambdaTest {
     }
 
     private void setupExpectedResponse200Ok() {
-        expectedResponse = "200 OK";
+        expectedResponse = NhlGameTodayLambdaResponse.builder()
+                .status("OK")
+                .statusCode(200)
+                .build();
     }
 
     private void whenHandleRequestIsCalled() {
