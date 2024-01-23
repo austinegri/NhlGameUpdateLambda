@@ -47,9 +47,7 @@
       "default": "Red Wings"
     },
     "abbrev": "DET",
-    "score": 0,
     "logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
-    "onIce": [],
     "radioLink": "https://d2igy0yla8zi0u.cloudfront.net/det/20232024/det-radio.m3u8"
   },
   "homeTeam": {
@@ -58,9 +56,7 @@
       "default": "Hurricanes"
     },
     "abbrev": "CAR",
-    "score": 0,
     "logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
-    "onIce": [],
     "radioLink": "https://d2igy0yla8zi0u.cloudfront.net/car/20232024/car-radio.m3u8"
   },
   "clock": {
@@ -68,7 +64,5 @@
     "secondsRemaining": 1200,
     "running": false,
     "inIntermission": false
-  },
-  "rosterSpots": [],
-  "plays": []
+  }
 }

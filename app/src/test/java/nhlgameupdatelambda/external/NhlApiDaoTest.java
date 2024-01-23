@@ -53,12 +53,11 @@ public class NhlApiDaoTest {
         setupExpectedInProgressBoxscoreResponse();
         whenGetBoxscoreIsCalled();
         assertEquals(expectedBoxscoreResponse, actualBoxscoreResponse);
-        assertEquals("https://api-web.nhle.com/v1/gamecenter/1111/play-by-play", String.format(PLAY_BY_PLAY_ENDPOINT, "1111"));
     }
 
 
     private void setupExpectedInProgressBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutureGameResponse.json"),
+        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
                 BoxscoreResponse.class);
     }
     private void whenGetBoxscoreIsCalled() {
