@@ -1,5 +1,5 @@
 # https://docs.aws.amazon.com/lambda/latest/dg/java-image.html
-FROM public.ecr.aws/lambda/java:21
+FROM public.ecr.aws/lambda/java:17
 
 # Copy function code and runtime dependencies from Gradle layout
 COPY app/build/classes/java/main ${LAMBDA_TASK_ROOT}
