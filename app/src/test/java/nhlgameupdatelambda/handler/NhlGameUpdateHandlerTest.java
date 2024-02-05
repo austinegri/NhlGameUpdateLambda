@@ -1,11 +1,8 @@
 package nhlgameupdatelambda.handler;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
-import nhlgameupdatelambda.NhlGameUpdateLambda;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
-import nhlgameupdatelambda.testHelpers.TestContext;
 import nhlgameupdatelambda.testHelpers.TestLogger;
 import org.junit.After;
 import org.junit.Before;
@@ -24,8 +21,7 @@ public class NhlGameUpdateHandlerTest {
 
     @Before
     public void setup() {
-//        underTest = new NhlGameUpdateHandler(new TestLogger(),  new Gson());
-        underTest = new NhlGameUpdateHandler(new Gson());
+        underTest = new NhlGameUpdateHandler(new TestLogger(), new Gson());
     }
 
     @After

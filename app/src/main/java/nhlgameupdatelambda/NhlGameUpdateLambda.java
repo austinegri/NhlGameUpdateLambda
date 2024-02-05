@@ -8,10 +8,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 
 public class NhlGameUpdateLambda implements RequestHandler<NhlGameTodayLambdaEvent, NhlGameTodayLambdaResponse> {
-    private final LambdaHandlers handlers = DaggerLambdaHandlers.create();
 
     // ToDo deploy using docker https://docs.aws.amazon.com/lambda/latest/dg/java-image.html#java-image-instructions
     public NhlGameTodayLambdaResponse handleRequest(@NonNull final NhlGameTodayLambdaEvent event, @NonNull final Context context) {
+        final LambdaHandlers handlers = DaggerLambdaHandlers.builder()
+                .nhlGameUpdateLambdaModule(new NhlGameUpdateLambdaModule(context))
+                .build();
         return handlers.nhlGameUpdateHandler()
                 .handleRequest(event);
     }
