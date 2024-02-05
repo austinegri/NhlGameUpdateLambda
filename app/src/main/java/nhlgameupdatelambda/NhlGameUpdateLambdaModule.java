@@ -12,20 +12,23 @@ import javax.inject.Singleton;
 @Module
 public class NhlGameUpdateLambdaModule {
 
-//    private final Context context;
+    private final Context context;
 
-//    public NhlGameUpdateLambdaModule(final Context context) {
-//        this.context = context;
-//    }
-    public NhlGameUpdateLambdaModule(){
-
+    public NhlGameUpdateLambdaModule(final Context context) {
+        this.context = context;
     }
 
-//    @Provides
-//    @Singleton
-//    public LambdaLogger loggerProvider() {
-//        return context.getLogger();
-//    }
+    @Provides
+    @Singleton
+    public LambdaLogger provideLogger() {
+        return context.getLogger();
+    }
+
+    @Provides
+    @Singleton
+    public Context provideContext() {
+        return context;
+    }
 
     @Provides
     @Singleton
