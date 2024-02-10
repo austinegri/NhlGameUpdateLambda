@@ -1,6 +1,7 @@
 package nhlgameupdatelambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import nhlgameupdatelambda.data.GameState;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
 import nhlgameupdatelambda.testHelpers.TestContext;
@@ -46,6 +47,7 @@ public class NhlGameUpdateLambdaTest {
         expectedResponse = NhlGameTodayLambdaResponse.builder()
                 .status("OK")
                 .statusCode(200)
+                .gameState(GameState.OFF)
                 .build();
     }
 
@@ -55,6 +57,6 @@ public class NhlGameUpdateLambdaTest {
 
     private void setupEventWithGameId() {
         event = new NhlGameTodayLambdaEvent();
-        event.setGameId("1111");
+        event.setGameId("2023020698");
     }
 }
