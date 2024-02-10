@@ -1,15 +1,12 @@
 package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 
 public class NhlApiDao {
     // https://github.com/chaanakyaaM/max_nhl_scraper/blob/main/max_nhl_scraper/max_nhl_scraper.py#L13-L23
@@ -26,7 +23,12 @@ public class NhlApiDao {
     private static final String ACCEPT = "Accept";
     private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8";
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
+
+    @Inject
+    public NhlApiDao(final ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public BoxscoreResponse getBoxscore(final String gameId) {
         try {
@@ -35,7 +37,7 @@ public class NhlApiDao {
             urlConnection.addRequestProperty(USER_AGENT, USER_AGENT_VALUE);
             urlConnection.addRequestProperty(ACCEPT, ACCEPT_VALUE);
 
-            return mapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
+            return objectMapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
         } catch (Exception e) {
             throw new RuntimeException(String.format("Unable to fetch boxscore data for gameId %s", gameId), e);
         }

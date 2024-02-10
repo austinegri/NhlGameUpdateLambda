@@ -1,9 +1,10 @@
-package nhlgameupdatelambda.data;
+package nhlgameupdatelambda.data.boxscore;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
+import nhlgameupdatelambda.data.GameState;
 
 import java.util.List;
 
@@ -23,11 +24,11 @@ public class BoxscoreResponse {
     private final GameState gameState;
     private final String gameScheduleState;
     private final int period;
-    private final Object periodDescriptor;
-    private final Object awayTeam;
-    private final Object homeTeam;
-    private final Object clock;
-    private final Object boxscore;
-    private final Object gameOutcome;
-    private final Object gameVideo;
+    private final PeriodDescriptor periodDescriptor;
+    private final BoxscoreTeam awayTeam;
+    private final BoxscoreTeam homeTeam;
+    private final Clock clock;
+    private final Boxscore boxscore;
+    private final GameOutcome gameOutcome;
+    private final GameVideo gameVideo;
 }
