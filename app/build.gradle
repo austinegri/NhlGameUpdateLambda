@@ -45,8 +45,15 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
+task copyRuntimeDependencies(type: Copy) {
+    from configurations.runtimeClasspath
+    into 'build/dependency'
+}
+
+build.dependsOn copyRuntimeDependencies
+
 jar {
     manifest {
-        attributes 'Main-Class': 'nhlgameupdatelambda.App'
+        attributes 'Main-Class': 'nhlgameupdatelambda.NhlGameUpdateLambda'
     }
 }
