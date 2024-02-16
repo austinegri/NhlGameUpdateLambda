@@ -8,6 +8,7 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
+    id("io.freefair.lombok") version "8.6"
     id 'java'
 }
 
@@ -33,16 +34,11 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.50'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.50'
 
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
     runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
 
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.+'
-    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 task copyRuntimeDependencies(type: Copy) {
