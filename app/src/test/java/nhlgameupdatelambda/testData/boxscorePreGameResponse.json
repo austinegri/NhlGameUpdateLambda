@@ -1,0 +1,68 @@
+{
+  "id": 2023020702,
+  "season": 20232024,
+  "gameType": 2,
+  "gameDate": "2024-01-19",
+  "venue": {
+    "default": "PNC Arena"
+  },
+  "startTimeUTC": "2024-01-20T00:00:00Z",
+  "easternUTCOffset": "-05:00",
+  "venueUTCOffset": "-05:00",
+  "tvBroadcasts": [
+    {
+      "id": 281,
+      "market": "N",
+      "countryCode": "CA",
+      "network": "TVAS",
+      "sequenceNumber": 31
+    },
+    {
+      "id": 282,
+      "market": "N",
+      "countryCode": "CA",
+      "network": "SN",
+      "sequenceNumber": 21
+    },
+    {
+      "id": 351,
+      "market": "A",
+      "countryCode": "US",
+      "network": "BSDET",
+      "sequenceNumber": 51
+    },
+    {
+      "id": 375,
+      "market": "H",
+      "countryCode": "US",
+      "network": "BSSO",
+      "sequenceNumber": 70
+    }
+  ],
+  "gameState": "PRE",
+  "gameScheduleState": "OK",
+  "awayTeam": {
+    "id": 17,
+    "name": {
+      "default": "Red Wings"
+    },
+    "abbrev": "DET",
+    "logo": "https://assets.nhle.com/logos/nhl/svg/DET_light.svg",
+    "radioLink": "https://d2igy0yla8zi0u.cloudfront.net/det/20232024/det-radio.m3u8"
+  },
+  "homeTeam": {
+    "id": 12,
+    "name": {
+      "default": "Hurricanes"
+    },
+    "abbrev": "CAR",
+    "logo": "https://assets.nhle.com/logos/nhl/svg/CAR_light.svg",
+    "radioLink": "https://d2igy0yla8zi0u.cloudfront.net/car/20232024/car-radio.m3u8"
+  },
+  "clock": {
+    "timeRemaining": "20:00",
+    "secondsRemaining": 1200,
+    "running": false,
+    "inIntermission": false
+  }
+}

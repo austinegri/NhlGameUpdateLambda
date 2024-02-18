@@ -80,6 +80,15 @@ public class NhlApiDaoTest {
     }
 
     @Test
+    public void getBoxscore_preGameId_boxscoreDataReturned() throws IOException {
+        setupPreGameId();
+        setupExpectedPreBoxscoreResponse();
+        expectObjectMapperOnPreBoxscoreUrl();
+        whenGetBoxscoreIsCalled();
+        verifyAll();
+    }
+
+    @Test
     public void getBoxscore_offGameId_boxscoreDataReturned() throws IOException {
         setupOffGameId();
         setupExpectedOffBoxscoreResponse();
@@ -109,6 +118,11 @@ public class NhlApiDaoTest {
 
     private void setupExpectedFutBoxscoreResponse() throws IOException {
         expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
+                BoxscoreResponse.class);
+    }
+
+    private void setupExpectedPreBoxscoreResponse() throws IOException {
+        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscorePreGameResponse.json"),
                 BoxscoreResponse.class);
     }
 
@@ -145,6 +159,13 @@ public class NhlApiDaoTest {
                         BoxscoreResponse.class));
     }
 
+    private void expectObjectMapperOnPreBoxscoreUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/boxscorePreGameResponse.json"),
+                        BoxscoreResponse.class));
+    }
+
     private void expectObjectMapperOnOffBoxscoreUrl() throws IOException {
         when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
                 .thenReturn(objectMapper.readValue(
@@ -159,6 +180,11 @@ public class NhlApiDaoTest {
     private void setupCritGameId() {
         gameId = "2023020861";
     }
+
+    private void setupPreGameId() {
+        gameId = "2023020702";
+    }
+
     private void setupFinalGameId() {
         gameId = "2023020861";
     }
