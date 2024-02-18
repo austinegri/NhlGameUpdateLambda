@@ -53,6 +53,15 @@ public class NhlApiDaoTest {
     }
 
     @Test
+    public void getBoxscore_critGameId_boxscoreDataReturned() throws IOException {
+        setupInProgressGameId();
+        setupExpectedCritBoxscoreResponse();
+        expectObjectMapperOnCritBoxscoreUrl();
+        whenGetBoxscoreIsCalled();
+        verifyAll();
+    }
+
+    @Test
     public void getBoxscore_futGameId_boxscoreDataReturned() throws IOException {
         setupFutureGameId();
         setupExpectedFutBoxscoreResponse();
@@ -79,6 +88,11 @@ public class NhlApiDaoTest {
                 BoxscoreResponse.class);
     }
 
+    private void setupExpectedCritBoxscoreResponse() throws IOException {
+        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
+                BoxscoreResponse.class);
+    }
+
     private void setupExpectedFutBoxscoreResponse() throws IOException {
         expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
                 BoxscoreResponse.class);
@@ -93,6 +107,13 @@ public class NhlApiDaoTest {
         when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreLiveGameResponse.json"),
+                        BoxscoreResponse.class));
+    }
+
+    private void expectObjectMapperOnCritBoxscoreUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
                         BoxscoreResponse.class));
     }
 
