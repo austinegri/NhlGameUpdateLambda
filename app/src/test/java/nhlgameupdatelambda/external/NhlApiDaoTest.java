@@ -54,9 +54,18 @@ public class NhlApiDaoTest {
 
     @Test
     public void getBoxscore_critGameId_boxscoreDataReturned() throws IOException {
-        setupInProgressGameId();
+        setupCritGameId();
         setupExpectedCritBoxscoreResponse();
         expectObjectMapperOnCritBoxscoreUrl();
+        whenGetBoxscoreIsCalled();
+        verifyAll();
+    }
+
+    @Test
+    public void getBoxscore_finalGameId_boxscoreDataReturned() throws IOException {
+        setupFinalGameId();
+        setupExpectedFinalBoxscoreResponse();
+        expectObjectMapperOnFinalBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyAll();
     }
@@ -93,6 +102,11 @@ public class NhlApiDaoTest {
                 BoxscoreResponse.class);
     }
 
+    private void setupExpectedFinalBoxscoreResponse() throws IOException {
+        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
+                BoxscoreResponse.class);
+    }
+
     private void setupExpectedFutBoxscoreResponse() throws IOException {
         expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
                 BoxscoreResponse.class);
@@ -117,6 +131,13 @@ public class NhlApiDaoTest {
                         BoxscoreResponse.class));
     }
 
+    private void expectObjectMapperOnFinalBoxscoreUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
+                        BoxscoreResponse.class));
+    }
+
     private void expectObjectMapperOnFutBoxscoreUrl() throws IOException {
         when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
                 .thenReturn(objectMapper.readValue(
@@ -133,6 +154,13 @@ public class NhlApiDaoTest {
 
     private void whenGetBoxscoreIsCalled() {
         actualBoxscoreResponse = underTest.getBoxscore(gameId);
+    }
+
+    private void setupCritGameId() {
+        gameId = "2023020861";
+    }
+    private void setupFinalGameId() {
+        gameId = "2023020861";
     }
 
     private void setupInProgressGameId() {

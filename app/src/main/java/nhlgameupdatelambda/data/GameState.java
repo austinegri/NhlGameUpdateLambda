@@ -4,5 +4,6 @@ public enum GameState {
     FUT,
     LIVE,
     CRIT,
+    FINAL,
     OFF,
 }
