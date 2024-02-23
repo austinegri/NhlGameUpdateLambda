@@ -45,8 +45,6 @@ public class NhlGameUpdateLambdaTest {
 
     private void setupExpectedResponse200Ok() {
         expectedResponse = NhlGameTodayLambdaResponse.builder()
-                .status("OK")
-                .statusCode(200)
                 .gameState(GameState.OFF)
                 .build();
     }

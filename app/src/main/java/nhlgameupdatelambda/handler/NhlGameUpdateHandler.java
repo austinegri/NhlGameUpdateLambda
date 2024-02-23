@@ -33,8 +33,6 @@ public class NhlGameUpdateHandler {
         final GameState gameState = nhlGameUpdateOrchestrator.update(event.getGameId());
 
         return NhlGameTodayLambdaResponse.builder()
-                .status("OK")
-                .statusCode(200)
                 .gameState(gameState)
                 .build();
     }
