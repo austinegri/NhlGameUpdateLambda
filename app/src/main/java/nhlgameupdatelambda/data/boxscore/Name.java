@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
 @Data
 @Builder
+@DynamoDbImmutable(builder = Name.NameBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Name {

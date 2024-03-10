@@ -6,14 +6,14 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
+import java.util.List;
+
 @Data
 @Builder
-@DynamoDbImmutable(builder = Clock.ClockBuilder.class)
+@DynamoDbImmutable(builder = GameInfoTeam.GameInfoTeamBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Clock {
-    private final String timeRemaining;
-    private final int secondsRemaining;
-    private final boolean running;
-    private final boolean inIntermission;
+public class GameInfoTeam {
+    private final Name headCoach;
+    private final List<ScratchPlayer> scratches;
 }

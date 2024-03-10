@@ -8,12 +8,13 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmut
 
 @Data
 @Builder
-@DynamoDbImmutable(builder = Clock.ClockBuilder.class)
+@DynamoDbImmutable(builder = Broadcast.BroadcastBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Clock {
-    private final String timeRemaining;
-    private final int secondsRemaining;
-    private final boolean running;
-    private final boolean inIntermission;
+public class Broadcast {
+    private final int id;
+    private final String market;
+    private final String countryCode;
+    private final String network;
+    private final int sequenceNumber;
 }

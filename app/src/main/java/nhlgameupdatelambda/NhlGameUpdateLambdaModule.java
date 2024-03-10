@@ -7,6 +7,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
+import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import javax.inject.Singleton;
 
@@ -41,6 +47,27 @@ public class NhlGameUpdateLambdaModule {
     @Singleton
     public ObjectMapper providesObjectMapper() {
         return new ObjectMapper();
+    }
+
+    @Provides
+    @Singleton
+    public Region providesRegion() {
+        final String aws_region = System.getenv("AWS_REGION");
+        return Region.of(aws_region);
+    }
+
+    @Provides
+    @Singleton
+    public DynamoDbTable<BoxscoreResponse> providesBoxscoreDdbTable(final Region aws_region) {
+        final DynamoDbClient ddb = DynamoDbClient.builder()
+                .region(aws_region)
+                .build();
+        final DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(ddb)
+                .build();
+        final String boxscoreTableName = System.getenv("boxscoreTableName");
+        return enhancedClient.table(boxscoreTableName,
+                TableSchema.fromImmutableClass(BoxscoreResponse.class));
     }
 
 }

@@ -8,12 +8,12 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmut
 
 @Data
 @Builder
-@DynamoDbImmutable(builder = Clock.ClockBuilder.class)
+@DynamoDbImmutable(builder = PeriodShots.PeriodShotsBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Clock {
-    private final String timeRemaining;
-    private final int secondsRemaining;
-    private final boolean running;
-    private final boolean inIntermission;
+public class PeriodShots {
+    private final int period;
+    private final PeriodDescriptor periodDescriptor;
+    private final int away;
+    private final int home;
 }
