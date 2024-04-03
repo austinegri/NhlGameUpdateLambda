@@ -1,6 +1,6 @@
 package nhlgameupdatelambda.orchestrator;
 
-import nhlgameupdatelambda.data.GameState;
+import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;

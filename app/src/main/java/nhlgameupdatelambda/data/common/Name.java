@@ -1,7 +1,8 @@
-package nhlgameupdatelambda.data.boxscore;
+package nhlgameupdatelambda.data.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -9,11 +10,11 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmut
 
 @Data
 @Builder
-@DynamoDbImmutable(builder = PlayerByGameStats.PlayerByGameStatsBuilder.class)
+@DynamoDbImmutable(builder = Name.NameBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PlayerByGameStats {
-    private final Roster awayTeam;
-    private final Roster homeTeam;
+public class Name {
+    @JsonProperty("default")
+    private final String name;
 }

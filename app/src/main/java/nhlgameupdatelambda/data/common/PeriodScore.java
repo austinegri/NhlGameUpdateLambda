@@ -1,7 +1,6 @@
-package nhlgameupdatelambda.data.boxscore;
+package nhlgameupdatelambda.data.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -9,11 +8,12 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmut
 
 @Data
 @Builder
-@DynamoDbImmutable(builder = ScoreTotal.ScoreTotalBuilder.class)
+@DynamoDbImmutable(builder = PeriodScore.PeriodScoreBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ScoreTotal {
-    private final Integer away;
-    private final Integer home;
+public class PeriodScore {
+    private final int period;
+    private final PeriodDescriptor periodDescriptor;
+    private final int away;
+    private final int home;
 }

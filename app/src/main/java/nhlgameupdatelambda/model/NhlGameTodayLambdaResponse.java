@@ -2,7 +2,7 @@ package nhlgameupdatelambda.model;
 
 import lombok.Builder;
 import lombok.Data;
-import nhlgameupdatelambda.data.GameState;
+import nhlgameupdatelambda.data.common.GameState;
 
 @Data
 @Builder

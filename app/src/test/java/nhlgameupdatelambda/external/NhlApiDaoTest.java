@@ -1,7 +1,10 @@
 package nhlgameupdatelambda.external;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.testHelpers.TestLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +33,8 @@ public class NhlApiDaoTest {
     @Mock
     private ObjectMapper mockObjectMapper;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false);;
 
     @Before
     public void setUp() throws Exception {
@@ -49,7 +53,7 @@ public class NhlApiDaoTest {
         setupExpectedInProgressBoxscoreResponse();
         expectObjectMapperOnInProgressBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
     @Test
@@ -58,7 +62,7 @@ public class NhlApiDaoTest {
         setupExpectedCritBoxscoreResponse();
         expectObjectMapperOnCritBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
     @Test
@@ -67,7 +71,7 @@ public class NhlApiDaoTest {
         setupExpectedFinalBoxscoreResponse();
         expectObjectMapperOnFinalBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
     @Test
@@ -76,7 +80,7 @@ public class NhlApiDaoTest {
         setupExpectedFutBoxscoreResponse();
         expectObjectMapperOnFutBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
     @Test
@@ -85,7 +89,7 @@ public class NhlApiDaoTest {
         setupExpectedPreBoxscoreResponse();
         expectObjectMapperOnPreBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
     @Test
@@ -94,10 +98,10 @@ public class NhlApiDaoTest {
         setupExpectedOffBoxscoreResponse();
         expectObjectMapperOnOffBoxscoreUrl();
         whenGetBoxscoreIsCalled();
-        verifyAll();
+        verifyBoxscore();
     }
 
-    private void verifyAll() {
+    private void verifyBoxscore() {
         assertEquals(expectedBoxscoreResponse, actualBoxscoreResponse);
     }
 

@@ -2,7 +2,7 @@ package nhlgameupdatelambda.handler;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.Gson;
-import nhlgameupdatelambda.data.GameState;
+import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
 import nhlgameupdatelambda.orchestrator.NhlGameUpdateOrchestrator;
