@@ -1,12 +1,11 @@
-package nhlgameupdatelambda.data.boxscore;
+package nhlgameupdatelambda.data.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
-import nhlgameupdatelambda.data.common.PeriodScore;
-import nhlgameupdatelambda.data.common.Shootout;
+import nhlgameupdatelambda.data.boxscore.ScoreTotal;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
 import java.util.List;

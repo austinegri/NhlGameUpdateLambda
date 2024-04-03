@@ -7,6 +7,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import nhlgameupdatelambda.data.common.*;
+import nhlgameupdatelambda.data.common.GameOutcome;
+import nhlgameupdatelambda.data.common.GameState;
+import nhlgameupdatelambda.data.common.GameVideo;
+import nhlgameupdatelambda.data.common.PeriodDescriptor;
+import nhlgameupdatelambda.data.common.Summary;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
