@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.playbyplay.Play;
+import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
+import nhlgameupdatelambda.data.playbyplay.PlayType;
 import nhlgameupdatelambda.testHelpers.TestLogger;
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +32,8 @@ public class NhlApiDaoTest {
     private NhlApiDao underTest;
     private BoxscoreResponse expectedBoxscoreResponse;
     private BoxscoreResponse actualBoxscoreResponse;
+    private PlayByPlay expectedPlayByPlay;
+    private PlayByPlay actualPlayByPlay;
 
     @Mock
     private ObjectMapper mockObjectMapper;
@@ -38,7 +43,7 @@ public class NhlApiDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        underTest = new NhlApiDao(mockObjectMapper);
+        underTest = new NhlApiDao(new TestLogger(), mockObjectMapper);
     }
 
     @After
@@ -99,6 +104,37 @@ public class NhlApiDaoTest {
         expectObjectMapperOnOffBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
+    }
+
+    @Test
+    public void getPlayByPlay_offGameId_playByPlayReturned() throws IOException {
+        setupOffGameId();
+        setupExpectedOffPlayByPlay();
+        expectObjectMapperOnOffPlayByPlayUrl();
+        whenGetPlayByPlayIsCalled();
+        verifyPlayByPlay();
+    }
+
+    @Test
+    public void getPlayByPlay_offOtGameId_playByPlayReturned() throws IOException {
+        setupOffGameId();
+        setupExpectedOffOtPlayByPlay();
+        expectObjectMapperOnOffOtPlayByPlayUrl();
+        whenGetPlayByPlayIsCalled();
+        verifyPlayByPlay();
+    }
+
+    @Test
+    public void getPlayByPlay_offShootoutGameId_playByPlayReturned() throws IOException {
+        setupOffGameId();
+        setupExpectedOffSoPlayByPlay();
+        expectObjectMapperOnOffShootoutPlayByPlayUrl();
+        whenGetPlayByPlayIsCalled();
+        verifyPlayByPlay();
+    }
+
+    private void verifyPlayByPlay() {
+        assertEquals(expectedPlayByPlay, actualPlayByPlay);
     }
 
     private void verifyBoxscore() {
@@ -170,6 +206,41 @@ public class NhlApiDaoTest {
                         BoxscoreResponse.class));
     }
 
+    private void expectObjectMapperOnOffPlayByPlayUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(PlayByPlay.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffGameResponse.json"),
+                        PlayByPlay.class));
+    }
+
+    private void expectObjectMapperOnOffOtPlayByPlayUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(PlayByPlay.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffOtGameResponse.json"),
+                        PlayByPlay.class));
+    }
+    private void expectObjectMapperOnOffShootoutPlayByPlayUrl() throws IOException {
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(PlayByPlay.class)))
+                .thenReturn(objectMapper.readValue(
+                        new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffShootoutGameResponse.json"),
+                        PlayByPlay.class));
+    }
+
+    private void setupExpectedOffPlayByPlay() throws IOException {
+        expectedPlayByPlay = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffGameResponse.json"),
+                PlayByPlay.class);
+    }
+
+    private void setupExpectedOffOtPlayByPlay() throws IOException {
+        expectedPlayByPlay = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffOtGameResponse.json"),
+                PlayByPlay.class);
+    }
+
+    private void setupExpectedOffSoPlayByPlay() throws IOException {
+        expectedPlayByPlay = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayOffShootoutGameResponse.json"),
+                PlayByPlay.class);
+    }
+
     private void expectObjectMapperOnOffBoxscoreUrl() throws IOException {
         when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
                 .thenReturn(objectMapper.readValue(
@@ -179,6 +250,10 @@ public class NhlApiDaoTest {
 
     private void whenGetBoxscoreIsCalled() {
         actualBoxscoreResponse = underTest.getBoxscore(gameId);
+    }
+
+    private void whenGetPlayByPlayIsCalled() {
+        actualPlayByPlay = underTest.getPlayByPlay(gameId);
     }
 
     private void setupCritGameId() {

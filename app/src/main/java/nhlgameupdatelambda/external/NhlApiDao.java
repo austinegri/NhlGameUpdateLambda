@@ -1,7 +1,10 @@
 package nhlgameupdatelambda.external;
 
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.playbyplay.PlayByPlayTeam;
 
 import javax.inject.Inject;
 import java.net.MalformedURLException;
@@ -23,31 +26,55 @@ public class NhlApiDao {
     private static final String ACCEPT = "Accept";
     private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8";
 
+    private final LambdaLogger logger;
     private final ObjectMapper objectMapper;
 
     @Inject
-    public NhlApiDao(final ObjectMapper objectMapper) {
+    public NhlApiDao(final LambdaLogger logger, final ObjectMapper objectMapper) {
+        this.logger = logger;
         this.objectMapper = objectMapper;
     }
 
     public BoxscoreResponse getBoxscore(final String gameId) {
         try {
-            final URL url = getBoxscoreEndpoint(gameId);
-            final URLConnection urlConnection = url.openConnection();
-            urlConnection.addRequestProperty(USER_AGENT, USER_AGENT_VALUE);
-            urlConnection.addRequestProperty(ACCEPT, ACCEPT_VALUE);
+            logger.log("Getting Boxscore from NhlApi for gameId: " + gameId);
+            final URLConnection urlConnection = getBoxscoreEndpoint(gameId)
+                    .openConnection();
+            addRequestProperties(urlConnection);
 
-            return objectMapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
-        } catch (Exception e) {
+            final BoxscoreResponse boxscore = objectMapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
+            logger.log("Fetched Boxscore from NhlApi for gameId: " + boxscore.getId());
+            return boxscore;
+        } catch (final Exception e) {
             throw new RuntimeException(String.format("Unable to fetch boxscore data for gameId %s", gameId), e);
         }
+    }
+
+    public PlayByPlay getPlayByPlay(final String gameId) {
+        try {
+            logger.log("Getting PlayByPlay from NhlApi for gameId: " + gameId);
+            final URLConnection urlConnection = getPlayByPlayEndpoint(gameId)
+                    .openConnection();
+            addRequestProperties(urlConnection);
+
+            final PlayByPlay playByPlay = objectMapper.readValue(urlConnection.getInputStream(), PlayByPlay.class);
+            logger.log("Fetched PlayByPlay from NhlApi for gameId: " + playByPlay.getId());
+            return playByPlay;
+        } catch (final Exception e) {
+            throw new RuntimeException(String.format("Unable to fetch playByPlay data for gameId %s", gameId), e);
+        }
+    }
+
+    private void addRequestProperties(final URLConnection urlConnection) {
+        urlConnection.addRequestProperty(USER_AGENT, USER_AGENT_VALUE);
+        urlConnection.addRequestProperty(ACCEPT, ACCEPT_VALUE);
     }
 
     private URL getBoxscoreEndpoint(final String gameId) throws MalformedURLException {
         return new URL(String.format(BOXSCORE_ENDPOINT, gameId));
     }
-    private String getPlayByPlayEndpoint(final String gameId) {
-        return String.format(PLAY_BY_PLAY_ENDPOINT, gameId);
+    private URL getPlayByPlayEndpoint(final String gameId) throws MalformedURLException {
+        return new URL(String.format(PLAY_BY_PLAY_ENDPOINT, gameId));
     }
     private String getShiftReportHomeEndpoint(final String season, final String gameId) {
         return String.format(SHIFT_REPORT_HOME_ENDPOINT, season, gameId.substring(4));
