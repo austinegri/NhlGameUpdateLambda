@@ -27,7 +27,6 @@
   ],
   "gameState": "LIVE",
   "gameScheduleState": "OK",
-  "period": 2,
   "periodDescriptor": {
     "number": 2,
     "periodType": "REG"
@@ -605,7 +604,6 @@
   "plays": [
     {
       "eventId": 52,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -620,7 +618,6 @@
     },
     {
       "eventId": 51,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -643,7 +640,6 @@
     },
     {
       "eventId": 53,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -665,7 +661,6 @@
     },
     {
       "eventId": 107,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -691,7 +686,6 @@
     },
     {
       "eventId": 114,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -717,7 +711,6 @@
     },
     {
       "eventId": 8,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -735,7 +728,6 @@
     },
     {
       "eventId": 54,
-      "period": 1,
       "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
@@ -758,8 +750,7 @@
     },
     {
       "eventId": 116,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -784,8 +775,7 @@
     },
     {
       "eventId": 117,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -810,8 +800,7 @@
     },
     {
       "eventId": 9,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -833,8 +822,7 @@
     },
     {
       "eventId": 118,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -856,8 +844,7 @@
     },
     {
       "eventId": 122,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -881,8 +868,7 @@
     },
     {
       "eventId": 55,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -904,8 +890,7 @@
     },
     {
       "eventId": 125,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -930,8 +915,7 @@
     },
     {
       "eventId": 136,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -955,8 +939,7 @@
     },
     {
       "eventId": 142,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -981,8 +964,7 @@
     },
     {
       "eventId": 149,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1007,8 +989,7 @@
     },
     {
       "eventId": 10,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1030,8 +1011,7 @@
     },
     {
       "eventId": 158,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1056,8 +1036,7 @@
     },
     {
       "eventId": 11,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1074,8 +1053,7 @@
     },
     {
       "eventId": 56,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1097,8 +1075,7 @@
     },
     {
       "eventId": 160,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1120,8 +1097,7 @@
     },
     {
       "eventId": 12,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1143,8 +1119,7 @@
     },
     {
       "eventId": 172,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1169,8 +1144,7 @@
     },
     {
       "eventId": 13,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1188,8 +1162,7 @@
     },
     {
       "eventId": 57,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1211,8 +1184,7 @@
     },
     {
       "eventId": 178,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1234,8 +1206,7 @@
     },
     {
       "eventId": 14,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1257,8 +1228,7 @@
     },
     {
       "eventId": 15,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1280,8 +1250,7 @@
     },
     {
       "eventId": 16,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1298,8 +1267,7 @@
     },
     {
       "eventId": 179,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1324,8 +1292,7 @@
     },
     {
       "eventId": 182,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1350,8 +1317,7 @@
     },
     {
       "eventId": 58,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1373,8 +1339,7 @@
     },
     {
       "eventId": 186,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1399,8 +1364,7 @@
     },
     {
       "eventId": 189,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1425,8 +1389,7 @@
     },
     {
       "eventId": 59,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1448,8 +1411,7 @@
     },
     {
       "eventId": 60,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1470,8 +1432,7 @@
     },
     {
       "eventId": 200,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1496,8 +1457,7 @@
     },
     {
       "eventId": 201,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1519,8 +1479,7 @@
     },
     {
       "eventId": 202,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1545,8 +1504,7 @@
     },
     {
       "eventId": 17,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1563,8 +1521,7 @@
     },
     {
       "eventId": 61,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1586,8 +1543,7 @@
     },
     {
       "eventId": 251,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1609,8 +1565,7 @@
     },
     {
       "eventId": 215,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1638,8 +1593,7 @@
     },
     {
       "eventId": 18,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1661,8 +1615,7 @@
     },
     {
       "eventId": 220,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1684,8 +1637,7 @@
     },
     {
       "eventId": 19,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1703,8 +1655,7 @@
     },
     {
       "eventId": 62,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1726,8 +1677,7 @@
     },
     {
       "eventId": 22,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1752,8 +1702,7 @@
     },
     {
       "eventId": 63,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1775,8 +1724,7 @@
     },
     {
       "eventId": 237,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1800,8 +1748,7 @@
     },
     {
       "eventId": 64,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1822,8 +1769,7 @@
     },
     {
       "eventId": 240,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1848,8 +1794,7 @@
     },
     {
       "eventId": 252,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1873,8 +1818,7 @@
     },
     {
       "eventId": 25,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1896,8 +1840,7 @@
     },
     {
       "eventId": 303,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1927,8 +1870,7 @@
     },
     {
       "eventId": 26,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1950,8 +1892,7 @@
     },
     {
       "eventId": 27,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1973,8 +1914,7 @@
     },
     {
       "eventId": 67,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -1995,8 +1935,7 @@
     },
     {
       "eventId": 28,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2018,8 +1957,7 @@
     },
     {
       "eventId": 309,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2044,8 +1982,7 @@
     },
     {
       "eventId": 311,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2067,8 +2004,7 @@
     },
     {
       "eventId": 320,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2093,8 +2029,7 @@
     },
     {
       "eventId": 321,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2116,8 +2051,7 @@
     },
     {
       "eventId": 29,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2135,8 +2069,7 @@
     },
     {
       "eventId": 68,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2158,8 +2091,7 @@
     },
     {
       "eventId": 69,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2180,8 +2112,7 @@
     },
     {
       "eventId": 553,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2206,8 +2137,7 @@
     },
     {
       "eventId": 30,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2224,8 +2154,7 @@
     },
     {
       "eventId": 70,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2247,8 +2176,7 @@
     },
     {
       "eventId": 327,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2270,8 +2198,7 @@
     },
     {
       "eventId": 71,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2292,8 +2219,7 @@
     },
     {
       "eventId": 32,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2315,8 +2241,7 @@
     },
     {
       "eventId": 330,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2340,8 +2265,7 @@
     },
     {
       "eventId": 72,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2362,8 +2286,7 @@
     },
     {
       "eventId": 332,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2387,8 +2310,7 @@
     },
     {
       "eventId": 34,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2410,8 +2332,7 @@
     },
     {
       "eventId": 342,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2433,8 +2354,7 @@
     },
     {
       "eventId": 73,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2455,8 +2375,7 @@
     },
     {
       "eventId": 35,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2478,8 +2397,7 @@
     },
     {
       "eventId": 345,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2504,8 +2422,7 @@
     },
     {
       "eventId": 74,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2526,8 +2443,7 @@
     },
     {
       "eventId": 75,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2548,8 +2464,7 @@
     },
     {
       "eventId": 76,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2570,8 +2485,7 @@
     },
     {
       "eventId": 77,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2592,8 +2506,7 @@
     },
     {
       "eventId": 36,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2615,8 +2528,7 @@
     },
     {
       "eventId": 404,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2641,8 +2553,7 @@
     },
     {
       "eventId": 37,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2664,8 +2575,7 @@
     },
     {
       "eventId": 38,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2687,8 +2597,7 @@
     },
     {
       "eventId": 417,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2713,8 +2622,7 @@
     },
     {
       "eventId": 41,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2731,8 +2639,7 @@
     },
     {
       "eventId": 40,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2754,8 +2661,7 @@
     },
     {
       "eventId": 78,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2777,8 +2683,7 @@
     },
     {
       "eventId": 79,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },
@@ -2799,8 +2704,7 @@
     },
     {
       "eventId": 42,
-      "period": 1,
-      "periodDescriptor": {
+            "periodDescriptor": {
         "number": 1,
         "periodType": "REG"
       },

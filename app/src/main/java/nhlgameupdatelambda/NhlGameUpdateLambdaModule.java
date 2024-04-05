@@ -94,7 +94,9 @@ public class NhlGameUpdateLambdaModule {
 
     @Provides
     @Singleton
-    public List<NhlDataHandler> providesNhlDataHandlers(final NhlBoxscoreDataHandler nhlBoxscoreDataHandler) {
-        return ImmutableList.of(nhlBoxscoreDataHandler);
+    public List<NhlDataHandler> providesNhlDataHandlers(final NhlBoxscoreDataHandler nhlBoxscoreDataHandler,
+                                                        final NhlPlayByPlayDataHandler nhlPlayByPlayDataHandler) {
+        return ImmutableList.of(nhlBoxscoreDataHandler,
+                nhlPlayByPlayDataHandler);
     }
 }

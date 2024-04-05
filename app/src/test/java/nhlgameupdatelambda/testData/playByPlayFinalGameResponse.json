@@ -29,7 +29,7 @@
       "sequenceNumber": 65
     }
   ],
-  "gameState": "OFF",
+  "gameState": "FINAL",
   "gameScheduleState": "OK",
   "periodDescriptor": {
     "number": 3,
