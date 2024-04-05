@@ -4,12 +4,16 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
+import nhlgameupdatelambda.datahandler.NhlBoxscoreDataHandler;
+import nhlgameupdatelambda.datahandler.NhlDataHandler;
+import nhlgameupdatelambda.datahandler.NhlPlayByPlayDataHandler;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -17,6 +21,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import javax.inject.Singleton;
+import java.util.List;
 
 @Module
 public class NhlGameUpdateLambdaModule {
@@ -87,4 +92,9 @@ public class NhlGameUpdateLambdaModule {
                 TableSchema.fromImmutableClass(PlayByPlay.class));
     }
 
+    @Provides
+    @Singleton
+    public List<NhlDataHandler> providesNhlDataHandlers(final NhlBoxscoreDataHandler nhlBoxscoreDataHandler) {
+        return ImmutableList.of(nhlBoxscoreDataHandler);
+    }
 }

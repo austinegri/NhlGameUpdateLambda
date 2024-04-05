@@ -1,30 +1,42 @@
 package nhlgameupdatelambda.orchestrator;
 
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.logging.LogLevel;
 import nhlgameupdatelambda.data.common.GameState;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
-import nhlgameupdatelambda.external.DdbDao;
-import nhlgameupdatelambda.external.NhlApiDao;
+import nhlgameupdatelambda.datahandler.NhlDataHandler;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NhlGameUpdateOrchestrator {
 
-    private final NhlApiDao nhlApiDao;
-    private final DdbDao ddbDao;
+    private final LambdaLogger logger;
+    private final List<NhlDataHandler> nhlDataHandlers;
 
     @Inject
-    public NhlGameUpdateOrchestrator(final NhlApiDao nhlApiDao, final DdbDao ddbDao) {
-        this.nhlApiDao = nhlApiDao;
-        this.ddbDao = ddbDao;
+    public NhlGameUpdateOrchestrator(final LambdaLogger logger, final List<NhlDataHandler> nhlDataHandlers) {
+        this.logger = logger;
+        this.nhlDataHandlers = nhlDataHandlers;
     }
     public GameState update(final String gameId) {
-        final BoxscoreResponse nhlApiBoxscore = nhlApiDao.getBoxscore(gameId);
-        final BoxscoreResponse ddbBoxscore = ddbDao.getBoxscore(Integer.parseInt(gameId));
+        final Set<GameState> gameStateResponses = nhlDataHandlers.parallelStream()
+                .map(nhlDataHandler -> {
+                    try {
+                        return nhlDataHandler.handle(gameId);
+                    } catch (final Exception e) {
+                        logger.log("Exception when calling " + nhlDataHandler.getClass() + ".handle for gameId "
+                                + gameId, LogLevel.ERROR);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
-        if(!nhlApiBoxscore.equals(ddbBoxscore)) {
-            ddbDao.putBoxscore(nhlApiBoxscore);
-        }
-
-        return nhlApiBoxscore.getGameState();
+        return gameStateResponses.stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Unable to succeed any data handlers for gameId: " + gameId));
     }
 }
