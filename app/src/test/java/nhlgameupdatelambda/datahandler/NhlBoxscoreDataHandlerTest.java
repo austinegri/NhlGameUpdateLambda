@@ -1,29 +1,35 @@
 package nhlgameupdatelambda.datahandler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
+import nhlgameupdatelambda.testHelpers.TestLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import software.amazon.awssdk.services.sns.model.PublishResponse;
 
 import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NhlBoxscoreDataHandlerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String GAME_STATE_TOPIC_ARN = "gameStateTopicArn";
     private String gameId;
     private GameState expectedGameState;
     private GameState actualGameState;
@@ -34,11 +40,14 @@ public class NhlBoxscoreDataHandlerTest {
     private NhlApiDao mockNhlApiDao;
     @Mock
     private DdbDao mockDdbDao;
+    @Mock
+    private SnsClient mockSnsClient;
 
     private NhlBoxscoreDataHandler underTest;
     @Before
     public void setUp() throws Exception {
-        underTest = new NhlBoxscoreDataHandler(mockNhlApiDao, mockDdbDao);
+        underTest = new NhlBoxscoreDataHandler(new TestLogger(), GAME_STATE_TOPIC_ARN,
+                mockNhlApiDao, mockDdbDao, mockSnsClient);
     }
 
     @After
@@ -58,7 +67,7 @@ public class NhlBoxscoreDataHandlerTest {
         setupExpectedGameStateOff();
         expectNhlApiDaoReturnsBoxscore();
         expectDdbDaoReturnsBoxscore();
-        whenNhlGameUpdateOrchestratorIsCalled();
+        whenNhlBoxscoreHandlerIsCalled();
         verifyGameState();
     }
 
@@ -69,12 +78,26 @@ public class NhlBoxscoreDataHandlerTest {
         setupExpectedGameStateFinal();
         expectNhlApiDaoReturnsBoxscore();
         expectDdbDaoReturnsBoxscore();
-        whenNhlGameUpdateOrchestratorIsCalled();
+        expectSnsClientUpdate();
+        whenNhlBoxscoreHandlerIsCalled();
         verifyGameState();
         verifyDdbBoxscorePutCalled();
     }
 
-    private void whenNhlGameUpdateOrchestratorIsCalled() {
+    @Test
+    public void update_snsClientThrowsException_GameStateOffReturned() throws IOException {
+        setGameId();
+        setupUpdatedNhlApiBoxscore();
+        setupExpectedGameStateFinal();
+        expectNhlApiDaoReturnsBoxscore();
+        expectDdbDaoReturnsBoxscore();
+        expectSnsClientUpdateThrowsException();
+        whenNhlBoxscoreHandlerIsCalled();
+        verifyGameState();
+        verifyDdbBoxscorePutCalled();
+    }
+
+    private void whenNhlBoxscoreHandlerIsCalled() {
         actualGameState = underTest.handle(gameId);
     }
 
@@ -86,6 +109,38 @@ public class NhlBoxscoreDataHandlerTest {
     private void expectDdbDaoReturnsBoxscore() {
         when(mockDdbDao.getBoxscore(Integer.parseInt(gameId)))
                 .thenReturn(ddbBoxscore);
+    }
+
+    private void expectSnsClientUpdate() throws JsonProcessingException {
+        final SnsGameStateUpdate gameUpdate = SnsGameStateUpdate.builder()
+                .gameId(nhlApiboxscore.getId()
+                        .toString())
+                .gameState(expectedGameState)
+                .build();
+        final PublishRequest publishRequest = PublishRequest.builder()
+                .message(OBJECT_MAPPER.writeValueAsString(gameUpdate))
+                .topicArn(GAME_STATE_TOPIC_ARN)
+                .build();
+        final PublishResponse publishResponse = PublishResponse.builder()
+                .build();
+        lenient().when(mockSnsClient.publish(eq(publishRequest)))
+                .thenReturn(publishResponse);
+    }
+
+    private void expectSnsClientUpdateThrowsException() throws JsonProcessingException {
+        final SnsGameStateUpdate gameUpdate = SnsGameStateUpdate.builder()
+                .gameId(nhlApiboxscore.getId()
+                        .toString())
+                .gameState(expectedGameState)
+                .build();
+        final PublishRequest publishRequest = PublishRequest.builder()
+                .message(OBJECT_MAPPER.writeValueAsString(gameUpdate))
+                .topicArn(GAME_STATE_TOPIC_ARN)
+                .build();
+        final PublishResponse publishResponse = PublishResponse.builder()
+                .build();
+        lenient().when(mockSnsClient.publish(eq(publishRequest)))
+                .thenThrow(new RuntimeException(""));
     }
 
     private void verifyDdbBoxscorePutCalled() {

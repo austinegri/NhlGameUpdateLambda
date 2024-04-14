@@ -22,10 +22,11 @@ version '1.0-SNAPSHOT'
 
 dependencies {
     // This dependency is used by the application.
-    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1' // ToDo upgrade to SDK 2.x
     implementation 'com.amazonaws:aws-lambda-java-log4j2:[1.6.0,)'
     implementation 'software.amazon.awssdk:dynamodb:2.21.20'
     implementation 'software.amazon.awssdk:dynamodb-enhanced:2.21.20'
+    implementation 'software.amazon.awssdk:sns:2.25.26'
 
     implementation 'com.google.guava:guava:33.0.0-jre'
     implementation 'com.google.code.gson:gson:2.10.1'

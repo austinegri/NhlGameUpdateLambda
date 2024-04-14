@@ -8,6 +8,7 @@ import nhlgameupdatelambda.external.NhlApiDao;
 import javax.inject.Inject;
 
 public class NhlPlayByPlayDataHandler implements NhlDataHandler {
+    private static final String SNS_TOPIC_ARN = System.getenv("gamePlayUpdateTopicArn");
     private final NhlApiDao nhlApiDao;
     private final DdbDao ddbDao;
 

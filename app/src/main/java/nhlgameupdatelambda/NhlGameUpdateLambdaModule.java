@@ -18,8 +18,10 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.List;
 
@@ -98,5 +100,25 @@ public class NhlGameUpdateLambdaModule {
                                                         final NhlPlayByPlayDataHandler nhlPlayByPlayDataHandler) {
         return ImmutableList.of(nhlBoxscoreDataHandler,
                 nhlPlayByPlayDataHandler);
+    }
+
+    @Provides
+    @Singleton
+    public SnsClient providesSnsClient(final Region aws_region) {
+        return SnsClient.builder()
+                .region(aws_region)
+                .build();
+    }
+
+    @Provides
+    @Named("GameStateTopicArn")
+    public String providesGameStateTopicArn() {
+        return System.getenv("gameStateUpdateTopicArn");
+    }
+
+    @Provides
+    @Named("GamePlayUpdateTopicArn")
+    public String providesPlaysUpdateTopicArn() {
+        return System.getenv("gamePlayUpdateTopicArn");
     }
 }
