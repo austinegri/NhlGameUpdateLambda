@@ -1,25 +1,20 @@
 package nhlgameupdatelambda.external;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
-import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
-import nhlgameupdatelambda.testHelpers.TestLogger;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Key;
-import software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest;
-import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
+import com.fasterxml.jackson.databind.*;
+import nhlgameupdatelambda.data.boxscore.*;
+import nhlgameupdatelambda.data.playbyplay.*;
+import nhlgameupdatelambda.testHelpers.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
+import software.amazon.awssdk.enhanced.dynamodb.*;
+import software.amazon.awssdk.enhanced.dynamodb.model.*;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)

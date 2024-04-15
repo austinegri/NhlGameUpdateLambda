@@ -1,8 +1,7 @@
 package nhlgameupdatelambda.testHelpers;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.amazonaws.services.lambda.runtime.*;
+import org.slf4j.*;
 
 public class TestLogger implements LambdaLogger {
     private static final Logger logger = LoggerFactory.getLogger(TestLogger.class);

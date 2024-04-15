@@ -1,22 +1,18 @@
 package nhlgameupdatelambda.handler;
 
-import com.google.gson.Gson;
-import nhlgameupdatelambda.data.common.GameState;
-import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
-import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
-import nhlgameupdatelambda.orchestrator.NhlGameUpdateOrchestrator;
-import nhlgameupdatelambda.testHelpers.TestLogger;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import com.google.gson.*;
+import nhlgameupdatelambda.data.common.*;
+import nhlgameupdatelambda.model.*;
+import nhlgameupdatelambda.orchestrator.*;
+import nhlgameupdatelambda.testHelpers.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NhlGameUpdateHandlerTest {

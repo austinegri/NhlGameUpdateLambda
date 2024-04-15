@@ -1,16 +1,15 @@
 package nhlgameupdatelambda.data;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.playbyplay.Play;
-import nhlgameupdatelambda.data.playbyplay.PlayType;
-import nhlgameupdatelambda.data.playbyplay.playdetail.PlayDetail;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
+import nhlgameupdatelambda.data.playbyplay.*;
+import nhlgameupdatelambda.data.playbyplay.playdetail.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.junit.*;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.StringContains.containsString;
 
 @RunWith(MockitoJUnitRunner.class)
