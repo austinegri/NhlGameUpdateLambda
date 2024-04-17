@@ -1,10 +1,10 @@
 package nhlgameupdatelambda.external;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
-import nhlgameupdatelambda.data.playbyplay.PlayByPlayTeam;
+import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.net.MalformedURLException;
@@ -26,24 +26,23 @@ public class NhlApiDao {
     private static final String ACCEPT = "Accept";
     private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8";
 
-    private final LambdaLogger logger;
+    private static final Logger log = LogManager.getLogger(NhlApiDao.class);
     private final ObjectMapper objectMapper;
 
     @Inject
-    public NhlApiDao(final LambdaLogger logger, final ObjectMapper objectMapper) {
-        this.logger = logger;
+    public NhlApiDao(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     public BoxscoreResponse getBoxscore(final String gameId) {
         try {
-            logger.log("Getting Boxscore from NhlApi for gameId: " + gameId);
+            log.info("Getting Boxscore from NhlApi for gameId: " + gameId);
             final URLConnection urlConnection = getBoxscoreEndpoint(gameId)
                     .openConnection();
             addRequestProperties(urlConnection);
 
             final BoxscoreResponse boxscore = objectMapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
-            logger.log("Fetched Boxscore from NhlApi for gameId: " + boxscore.getId());
+            log.info("Fetched Boxscore from NhlApi for gameId: " + boxscore.getId());
             return boxscore;
         } catch (final Exception e) {
             throw new RuntimeException(String.format("Unable to fetch boxscore data for gameId %s", gameId), e);
@@ -52,13 +51,13 @@ public class NhlApiDao {
 
     public PlayByPlay getPlayByPlay(final String gameId) {
         try {
-            logger.log("Getting PlayByPlay from NhlApi for gameId: " + gameId);
+            log.info("Getting PlayByPlay from NhlApi for gameId: " + gameId);
             final URLConnection urlConnection = getPlayByPlayEndpoint(gameId)
                     .openConnection();
             addRequestProperties(urlConnection);
 
             final PlayByPlay playByPlay = objectMapper.readValue(urlConnection.getInputStream(), PlayByPlay.class);
-            logger.log("Fetched PlayByPlay from NhlApi for gameId: " + playByPlay.getId());
+            log.info("Fetched PlayByPlay from NhlApi for gameId: " + playByPlay.getId());
             return playByPlay;
         } catch (final Exception e) {
             throw new RuntimeException(String.format("Unable to fetch playByPlay data for gameId %s", gameId), e);

@@ -1,13 +1,13 @@
 package nhlgameupdatelambda.datahandler;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 import software.amazon.awssdk.services.sns.model.PublishResponse;
@@ -17,20 +17,18 @@ import javax.inject.Named;
 
 public class NhlBoxscoreDataHandler implements NhlDataHandler {
 
+    private static final Logger log = LogManager.getLogger(NhlBoxscoreDataHandler.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 
-    private final LambdaLogger logger;
     private final String gameStateTopicArn;
     private final NhlApiDao nhlApiDao;
     private final DdbDao ddbDao;
     private final SnsClient snsClient;
 
     @Inject
-    public NhlBoxscoreDataHandler(final LambdaLogger logger,
-                                  @Named("GameStateTopicArn") final String gameStateTopicArn,
+    public NhlBoxscoreDataHandler(@Named("GameStateTopicArn") final String gameStateTopicArn,
                                   final NhlApiDao nhlApiDao, final DdbDao ddbDao, final SnsClient snsClient) {
-        this.logger = logger;
         this.gameStateTopicArn = gameStateTopicArn;
         this.nhlApiDao = nhlApiDao;
         this.ddbDao = ddbDao;
@@ -64,12 +62,12 @@ public class NhlBoxscoreDataHandler implements NhlDataHandler {
                     .message(OBJECT_MAPPER.writeValueAsString(snsGameStateUpdate))
                     .topicArn(gameStateTopicArn)
                     .build();
-            final PublishResponse result = snsClient.publish(request);
-            logger.log("Published Sns gameState update for gameId: " + gameId + " and gameState: "
-                    + updatedGameState);
+            final PublishResponse response = snsClient.publish(request);
+            log.info("Received response for Sns gameState update for gameId: {} gameState: {} response: {}",
+                    gameId, updatedGameState, response);
         } catch (final Exception e) {
-            logger.log(e.getClass() + " Exception when publishing gameState for gameId: " + gameId
-                    + " with gameState: " + updatedGameState + ". " + e.getMessage(), LogLevel.ERROR);
+            log.error("{} Exception when publishing gameState for gameId: {} with gameState: {}. ",
+                    e.getClass(), gameId, updatedGameState, e);
         }
     }
 }

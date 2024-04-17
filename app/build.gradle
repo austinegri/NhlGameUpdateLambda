@@ -8,8 +8,9 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id "io.freefair.lombok" version "8.6"
     id 'java'
+    id "io.freefair.lombok" version "8.6"
+    id 'io.freefair.aspectj.post-compile-weaving' version '8.1.0'
 }
 
 repositories {
@@ -30,8 +31,12 @@ dependencies {
 
     implementation 'com.google.guava:guava:33.0.0-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'org.slf4j:slf4j-nop:2.0.6'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.16.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.4'
+
+    aspect 'software.amazon.lambda:powertools-logging:1.18.0'
+    aspect 'software.amazon.lambda:powertools-tracing:1.18.0'
+    aspect 'software.amazon.lambda:powertools-metrics:1.18.0'
+    implementation 'org.aspectj:aspectjrt:1.9.21.2'
 
     implementation 'com.google.dagger:dagger:2.50'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.50'

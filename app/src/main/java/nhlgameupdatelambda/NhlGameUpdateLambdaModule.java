@@ -1,7 +1,6 @@
 package nhlgameupdatelambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -18,8 +17,8 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.sns.SnsClient;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -32,12 +31,6 @@ public class NhlGameUpdateLambdaModule {
 
     public NhlGameUpdateLambdaModule(final Context context) {
         this.context = context;
-    }
-
-    @Provides
-    @Singleton
-    public LambdaLogger provideLogger() {
-        return context.getLogger();
     }
 
     @Provides

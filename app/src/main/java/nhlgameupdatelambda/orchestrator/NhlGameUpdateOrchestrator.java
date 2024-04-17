@@ -1,9 +1,10 @@
 package nhlgameupdatelambda.orchestrator;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.logging.LogLevel;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -13,21 +14,21 @@ import java.util.stream.Collectors;
 
 public class NhlGameUpdateOrchestrator {
 
-    private final LambdaLogger logger;
+    private static final Logger log = LogManager.getLogger(NhlGameUpdateOrchestrator.class);
     private final List<NhlDataHandler> nhlDataHandlers;
 
     @Inject
-    public NhlGameUpdateOrchestrator(final LambdaLogger logger, final List<NhlDataHandler> nhlDataHandlers) {
-        this.logger = logger;
+    public NhlGameUpdateOrchestrator(final List<NhlDataHandler> nhlDataHandlers) {
         this.nhlDataHandlers = nhlDataHandlers;
     }
+
     public GameState update(final String gameId) {
         final Set<GameState> gameStateResponses = nhlDataHandlers.parallelStream()
                 .map(nhlDataHandler -> {
                     try {
                         return nhlDataHandler.handle(gameId);
                     } catch (final Exception e) {
-                        logger.log("Exception when calling " + nhlDataHandler.getClass() + ".handle for gameId "
+                        log.info("Exception when calling " + nhlDataHandler.getClass() + ".handle for gameId "
                                 + gameId, LogLevel.ERROR);
                         return null;
                     }

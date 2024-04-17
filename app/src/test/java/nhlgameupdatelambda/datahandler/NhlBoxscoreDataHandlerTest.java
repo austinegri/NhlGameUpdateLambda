@@ -1,22 +1,26 @@
 package nhlgameupdatelambda.datahandler;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
-import nhlgameupdatelambda.data.boxscore.*;
-import nhlgameupdatelambda.data.common.*;
-import nhlgameupdatelambda.data.sns.*;
-import nhlgameupdatelambda.external.*;
-import nhlgameupdatelambda.testHelpers.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
-import software.amazon.awssdk.services.sns.*;
-import software.amazon.awssdk.services.sns.model.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.common.GameState;
+import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
+import nhlgameupdatelambda.external.DdbDao;
+import nhlgameupdatelambda.external.NhlApiDao;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import software.amazon.awssdk.services.sns.model.PublishResponse;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,7 +44,7 @@ public class NhlBoxscoreDataHandlerTest {
     private NhlBoxscoreDataHandler underTest;
     @Before
     public void setUp() throws Exception {
-        underTest = new NhlBoxscoreDataHandler(new TestLogger(), GAME_STATE_TOPIC_ARN,
+        underTest = new NhlBoxscoreDataHandler(GAME_STATE_TOPIC_ARN,
                 mockNhlApiDao, mockDdbDao, mockSnsClient);
     }
 

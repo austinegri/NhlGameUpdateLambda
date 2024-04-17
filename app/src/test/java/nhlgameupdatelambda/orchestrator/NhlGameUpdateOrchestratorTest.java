@@ -1,19 +1,22 @@
 package nhlgameupdatelambda.orchestrator;
 
-import com.google.common.collect.*;
-import nhlgameupdatelambda.data.common.*;
-import nhlgameupdatelambda.datahandler.*;
-import nhlgameupdatelambda.testHelpers.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
+import com.google.common.collect.ImmutableList;
+import nhlgameupdatelambda.data.common.GameState;
+import nhlgameupdatelambda.datahandler.NhlBoxscoreDataHandler;
+import nhlgameupdatelambda.datahandler.NhlDataHandler;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NhlGameUpdateOrchestratorTest {
@@ -33,7 +36,7 @@ public class NhlGameUpdateOrchestratorTest {
     public void setUp() throws Exception {
         nhlDataHandlers = ImmutableList.of(mockNhlDataHandler,
                 mockNhlBoxscoreDataHandler);
-        underTest = new NhlGameUpdateOrchestrator(new TestLogger(), nhlDataHandlers);
+        underTest = new NhlGameUpdateOrchestrator(nhlDataHandlers);
     }
 
     @After

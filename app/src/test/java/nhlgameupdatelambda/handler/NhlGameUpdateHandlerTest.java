@@ -1,18 +1,19 @@
 package nhlgameupdatelambda.handler;
 
-import com.google.gson.*;
-import nhlgameupdatelambda.data.common.*;
-import nhlgameupdatelambda.model.*;
-import nhlgameupdatelambda.orchestrator.*;
-import nhlgameupdatelambda.testHelpers.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
+import nhlgameupdatelambda.data.common.GameState;
+import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
+import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
+import nhlgameupdatelambda.orchestrator.NhlGameUpdateOrchestrator;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NhlGameUpdateHandlerTest {
@@ -29,7 +30,7 @@ public class NhlGameUpdateHandlerTest {
 
     @Before
     public void setup() {
-        underTest = new NhlGameUpdateHandler(new TestLogger(), new Gson(), mockNhlGameUpdateOrchestrator);
+        underTest = new NhlGameUpdateHandler(mockNhlGameUpdateOrchestrator);
     }
 
     @After
