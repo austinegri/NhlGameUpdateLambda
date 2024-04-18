@@ -1,9 +1,8 @@
 package nhlgameupdatelambda.external;
 
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest;
@@ -11,9 +10,9 @@ import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
 import javax.inject.Inject;
 
+@Slf4j
 public class DdbDao {
 
-    private static final Logger log = LogManager.getLogger(DdbDao.class);
     private final DynamoDbTable<BoxscoreResponse> boxscoreDdbTable;
     private final DynamoDbTable<PlayByPlay> playByPlayDdbTable;
 

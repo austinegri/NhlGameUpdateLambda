@@ -1,13 +1,12 @@
 package nhlgameupdatelambda.datahandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 import software.amazon.awssdk.services.sns.model.PublishResponse;
@@ -15,9 +14,9 @@ import software.amazon.awssdk.services.sns.model.PublishResponse;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+@Slf4j
 public class NhlBoxscoreDataHandler implements NhlDataHandler {
 
-    private static final Logger log = LogManager.getLogger(NhlBoxscoreDataHandler.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 

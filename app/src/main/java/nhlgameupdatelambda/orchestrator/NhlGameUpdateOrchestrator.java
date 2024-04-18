@@ -1,10 +1,8 @@
 package nhlgameupdatelambda.orchestrator;
 
-import com.amazonaws.services.lambda.runtime.logging.LogLevel;
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -12,9 +10,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class NhlGameUpdateOrchestrator {
 
-    private static final Logger log = LogManager.getLogger(NhlGameUpdateOrchestrator.class);
     private final List<NhlDataHandler> nhlDataHandlers;
 
     @Inject
@@ -28,8 +26,7 @@ public class NhlGameUpdateOrchestrator {
                     try {
                         return nhlDataHandler.handle(gameId);
                     } catch (final Exception e) {
-                        log.info("Exception when calling " + nhlDataHandler.getClass() + ".handle for gameId "
-                                + gameId, LogLevel.ERROR);
+                        log.error("Exception when calling {}.handle for gameId {}", nhlDataHandler.getClass(), gameId);
                         return null;
                     }
                 })

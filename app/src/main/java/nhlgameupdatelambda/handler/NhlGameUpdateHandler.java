@@ -1,19 +1,16 @@
 package nhlgameupdatelambda.handler;
 
-import nhlgameupdatelambda.NhlGameUpdateLambda;
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaEvent;
 import nhlgameupdatelambda.model.NhlGameTodayLambdaResponse;
 import nhlgameupdatelambda.orchestrator.NhlGameUpdateOrchestrator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 
 
+@Slf4j
 public class NhlGameUpdateHandler {
-
-    private static final Logger log = LogManager.getLogger(NhlGameUpdateLambda.class);
 
     private final NhlGameUpdateOrchestrator nhlGameUpdateOrchestrator;
 
@@ -23,10 +20,9 @@ public class NhlGameUpdateHandler {
     }
 
     public NhlGameTodayLambdaResponse handleRequest(final NhlGameTodayLambdaEvent event) {
-
-        // process event
         final GameState gameState = nhlGameUpdateOrchestrator.update(event.getGameId());
 
+        log.info("Returning GameState {}", gameState);
         return NhlGameTodayLambdaResponse.builder()
                 .gameState(gameState)
                 .build();

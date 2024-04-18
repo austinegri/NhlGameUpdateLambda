@@ -1,16 +1,16 @@
 package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+@Slf4j
 public class NhlApiDao {
     // https://github.com/chaanakyaaM/max_nhl_scraper/blob/main/max_nhl_scraper/max_nhl_scraper.py#L13-L23
     // https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md
@@ -26,7 +26,6 @@ public class NhlApiDao {
     private static final String ACCEPT = "Accept";
     private static final String ACCEPT_VALUE = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8";
 
-    private static final Logger log = LogManager.getLogger(NhlApiDao.class);
     private final ObjectMapper objectMapper;
 
     @Inject
