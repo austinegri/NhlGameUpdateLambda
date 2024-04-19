@@ -5,6 +5,7 @@ public enum GameState {
     PRE,
     LIVE,
     CRIT,
+    OVER,
     FINAL,
     OFF,
 }
