@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import nhlgameupdatelambda.data.common.PeriodDescriptor;
-import nhlgameupdatelambda.data.playbyplay.playdetail.*;
+import nhlgameupdatelambda.data.playbyplay.playdetail.PlayDetail;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnoreNulls;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 

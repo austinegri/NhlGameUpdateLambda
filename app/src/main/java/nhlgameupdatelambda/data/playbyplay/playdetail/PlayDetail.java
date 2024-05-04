@@ -2,13 +2,13 @@ package nhlgameupdatelambda.data.playbyplay.playdetail;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
 @Data
-@SuperBuilder
+@Builder
 @DynamoDbImmutable(builder = PlayDetail.PlayDetailBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)

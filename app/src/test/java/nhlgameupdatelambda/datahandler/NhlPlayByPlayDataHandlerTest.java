@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
 public class NhlPlayByPlayDataHandlerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     private String gameId;
     private GameState expectedGameState;
     private GameState actualGameState;
