@@ -16,9 +16,12 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 import java.util.LinkedHashSet;
 import java.util.List;
 
+
 @Data
 @Builder
-@DynamoDbImmutable(builder = PlayByPlay.PlayByPlayBuilder.class)
+@DynamoDbImmutable(
+        builder = PlayByPlay.PlayByPlayBuilder.class
+)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)

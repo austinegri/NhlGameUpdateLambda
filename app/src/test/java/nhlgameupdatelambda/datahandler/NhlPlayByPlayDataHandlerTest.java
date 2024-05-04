@@ -1,24 +1,35 @@
 package nhlgameupdatelambda.datahandler;
 
-import com.fasterxml.jackson.databind.*;
-import nhlgameupdatelambda.data.common.*;
-import nhlgameupdatelambda.data.playbyplay.*;
-import nhlgameupdatelambda.external.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.mockito.junit.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import nhlgameupdatelambda.data.common.GameState;
+import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
+import nhlgameupdatelambda.data.sns.GamePlayUpdate;
+import nhlgameupdatelambda.external.DdbDao;
+import nhlgameupdatelambda.external.NhlApiDao;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import software.amazon.awssdk.services.sns.model.PublishResponse;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static nhlgameupdatelambda.testData.TestData.UPDATED_PLAYS;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NhlPlayByPlayDataHandlerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    private static final String GAME_PLAY_UPDATE_TOPIC_ARN = "gamePlayUpdateTopicArn";
     private String gameId;
     private GameState expectedGameState;
     private GameState actualGameState;
@@ -29,11 +40,14 @@ public class NhlPlayByPlayDataHandlerTest {
     private NhlApiDao mockNhlApiDao;
     @Mock
     private DdbDao mockDdbDao;
+    @Mock
+    private SnsClient mockSnsClient;
 
     private NhlPlayByPlayDataHandler underTest;
     @Before
     public void setUp() throws Exception {
-        underTest = new NhlPlayByPlayDataHandler(mockNhlApiDao, mockDdbDao);
+        underTest = new NhlPlayByPlayDataHandler(GAME_PLAY_UPDATE_TOPIC_ARN, mockNhlApiDao, mockDdbDao,
+                mockSnsClient);
     }
 
     @After
@@ -64,6 +78,20 @@ public class NhlPlayByPlayDataHandlerTest {
         setupExpectedGameStateFinal();
         expectNhlApiDaoReturnsPlayByPlay();
         expectDdbDaoReturnsPlayByPlay();
+        expectSnsClientUpdate();
+        whenNhlGameUpdateOrchestratorIsCalled();
+        verifyGameState();
+        verifyDdbPlayByPlayPutCalled();
+    }
+
+    @Test
+    public void update_snsException_GameStateOffReturned() throws IOException {
+        setGameId();
+        setupUpdatedNhlApiPlayByPlay();
+        setupExpectedGameStateFinal();
+        expectNhlApiDaoReturnsPlayByPlay();
+        expectDdbDaoReturnsPlayByPlay();
+        expectSnsClientUpdateThrowsException();
         whenNhlGameUpdateOrchestratorIsCalled();
         verifyGameState();
         verifyDdbPlayByPlayPutCalled();
@@ -81,6 +109,38 @@ public class NhlPlayByPlayDataHandlerTest {
     private void expectDdbDaoReturnsPlayByPlay() {
         when(mockDdbDao.getPlayByPlay(Integer.parseInt(gameId)))
                 .thenReturn(ddbPlaybyPlay);
+    }
+
+    private void expectSnsClientUpdate() throws JsonProcessingException {
+        final GamePlayUpdate gameUpdate = GamePlayUpdate.builder()
+                .gameId(nhlApiPlayByPlay.getId()
+                        .toString())
+                .newPlays(UPDATED_PLAYS)
+                .build();
+        final PublishRequest publishRequest = PublishRequest.builder()
+                .message(OBJECT_MAPPER.writeValueAsString(gameUpdate))
+                .topicArn(GAME_PLAY_UPDATE_TOPIC_ARN)
+                .build();
+        final PublishResponse publishResponse = PublishResponse.builder()
+                .build();
+        lenient().when(mockSnsClient.publish(eq(publishRequest)))
+                .thenReturn(publishResponse);
+    }
+
+    private void expectSnsClientUpdateThrowsException() throws JsonProcessingException {
+        final GamePlayUpdate gameUpdate = GamePlayUpdate.builder()
+                .gameId(nhlApiPlayByPlay.getId()
+                        .toString())
+                .newPlays(null)
+                .build();
+        final PublishRequest publishRequest = PublishRequest.builder()
+                .message(OBJECT_MAPPER.writeValueAsString(gameUpdate))
+                .topicArn(GAME_PLAY_UPDATE_TOPIC_ARN)
+                .build();
+        final PublishResponse publishResponse = PublishResponse.builder()
+                .build();
+        lenient().when(mockSnsClient.publish(eq(publishRequest)))
+                .thenThrow(new RuntimeException(""));
     }
 
     private void verifyDdbPlayByPlayPutCalled() {
