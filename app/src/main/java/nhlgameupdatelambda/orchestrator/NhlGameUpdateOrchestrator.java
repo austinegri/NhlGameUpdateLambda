@@ -26,8 +26,8 @@ public class NhlGameUpdateOrchestrator {
                     try {
                         return nhlDataHandler.handle(gameId);
                     } catch (final Exception e) {
-                        log.error("Exception when calling {}.handle for gameId {}", nhlDataHandler.getClass(), gameId);
-                        return null;
+                        throw new RuntimeException(String.format("Exception when calling %s.handle for gameId %s",
+                                nhlDataHandler.getClass(), gameId), e);
                     }
                 })
                 .filter(Objects::nonNull)
