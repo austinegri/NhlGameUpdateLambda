@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,15 +60,13 @@ public class NhlGameUpdateOrchestratorTest {
         verifyGameState();
     }
 
-    //ToDo fix!
-//    @Test
-//    public void update_oneDataHandlerFails_GameStateOffReturned() throws IOException {
-//        setGameId();
-//        setupExpectedGameStateOff();
-//        expectOneDataHandlerThrowsException();
-//        whenNhlGameUpdateOrchestratorIsCalled();
-//        verifyGameState();
-//    }
+    @Test
+    public void update_oneDataHandlerFails_GameStateOffReturned() throws IOException {
+        setGameId();
+        setupExpectedGameStateOff();
+        expectOneDataHandlerThrowsException();
+        assertThrows(RuntimeException.class, () -> whenNhlGameUpdateOrchestratorIsCalled());
+    }
 
     @Test
     public void update_allDataHandlersFail_ExceptionThrown() throws IOException {
@@ -90,16 +89,16 @@ public class NhlGameUpdateOrchestratorTest {
 
     private void expectOneDataHandlerThrowsException() throws IOException {
         final GameState gameState = GameState.OFF;
-        when(mockNhlDataHandler.handle(gameId))
-                .thenThrow(new RuntimeException());
-        when(mockNhlBoxscoreDataHandler.handle(gameId))
+        lenient().when(mockNhlDataHandler.handle(gameId))
                 .thenReturn(gameState);
+        lenient().when(mockNhlBoxscoreDataHandler.handle(gameId))
+                .thenThrow(new RuntimeException());
     }
 
     private void expectAllDataHandlersThrowException() throws IOException {
-        when(mockNhlDataHandler.handle(gameId))
+        lenient().when(mockNhlDataHandler.handle(gameId))
                 .thenThrow(new RuntimeException());
-        when(mockNhlBoxscoreDataHandler.handle(gameId))
+        lenient().when(mockNhlBoxscoreDataHandler.handle(gameId))
                 .thenThrow(new RuntimeException());
     }
 
