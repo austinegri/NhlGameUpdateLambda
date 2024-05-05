@@ -2,6 +2,7 @@ package nhlgameupdatelambda.data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import nhlgameupdatelambda.data.playbyplay.Play;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.playbyplay.PlayType;
@@ -13,6 +14,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvide
 import software.amazon.awssdk.enhanced.dynamodb.document.EnhancedDocument;
 
 import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -64,17 +66,10 @@ public class DataMapperTest {
                 .build();
         final PlayByPlay playByPlay = PlayByPlay.builder()
                 .id(2222)
-//                .plays(ImmutableList.of(play)
-//                        .stream()
-//                        .collect(Collectors
-//                                .toCollection(LinkedHashSet::new))
-//                )
+                .plays(ImmutableList.of(play)
+                        .stream()
+                        .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .build();
-        LinkedHashSet tmp = LinkedHashSet.newLinkedHashSet(1);
-//        System.out.println(playByPlay.getPlays().getClass().isAssignableFrom(Set.class));
-//        System.out.println(tmp.getClass().isAssignableFrom(Set.class));
-//        System.out.println(tmp.getClass().isAssignableFrom(List.class));
-//        System.out.println(ImmutableList.of().getClass().isAssignableFrom(List.class));
         final EnhancedDocument enhancedDocument = EnhancedDocument.builder()
                 // Important: You must specify attribute converter providers when you build an EnhancedDocument instance not used with a DynamoDB table.
                 .attributeConverterProviders(DefaultAttributeConverterProvider.create())
