@@ -1,4 +1,4 @@
-package nhlgameupdatelambda.datahandler;
+package nhlgameupdatelambda.datahandler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
@@ -7,6 +7,7 @@ import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.playbyplay.Play;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.sns.GamePlayUpdate;
+import nhlgameupdatelambda.datahandler.NhlDataHandler;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
 import software.amazon.awssdk.services.sns.SnsClient;

@@ -2,7 +2,7 @@ package nhlgameupdatelambda.orchestrator;
 
 import com.google.common.collect.ImmutableList;
 import nhlgameupdatelambda.data.common.GameState;
-import nhlgameupdatelambda.datahandler.NhlBoxscoreDataHandler;
+import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
 import org.junit.After;
 import org.junit.Before;

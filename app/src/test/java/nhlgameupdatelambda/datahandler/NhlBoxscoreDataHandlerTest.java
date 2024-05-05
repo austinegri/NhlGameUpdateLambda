@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
+import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
 import org.junit.After;

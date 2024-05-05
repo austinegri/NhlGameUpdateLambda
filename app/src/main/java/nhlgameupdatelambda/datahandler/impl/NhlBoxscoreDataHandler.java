@@ -1,10 +1,11 @@
-package nhlgameupdatelambda.datahandler;
+package nhlgameupdatelambda.datahandler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
+import nhlgameupdatelambda.datahandler.NhlDataHandler;
 import nhlgameupdatelambda.external.DdbDao;
 import nhlgameupdatelambda.external.NhlApiDao;
 import software.amazon.awssdk.services.sns.SnsClient;
