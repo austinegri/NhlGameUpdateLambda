@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
@@ -61,7 +61,7 @@ public class NhlGameUpdateLambdaModule {
 
     @Provides
     @Singleton
-    public DynamoDbTable<BoxscoreResponse> providesBoxscoreDdbTable(final Region aws_region) {
+    public DynamoDbTable<Boxscore> providesBoxscoreDdbTable(final Region aws_region) {
         final DynamoDbClient ddb = DynamoDbClient.builder()
                 .region(aws_region)
                 .build();
@@ -70,7 +70,7 @@ public class NhlGameUpdateLambdaModule {
                 .build();
         final String boxscoreTableName = System.getenv("boxscoreTableName");
         return enhancedClient.table(boxscoreTableName,
-                TableSchema.fromImmutableClass(BoxscoreResponse.class));
+                TableSchema.fromImmutableClass(Boxscore.class));
     }
 
     @Provides

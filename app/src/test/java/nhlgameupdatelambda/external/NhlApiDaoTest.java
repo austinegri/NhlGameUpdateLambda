@@ -2,7 +2,7 @@ package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import org.junit.After;
 import org.junit.Before;
@@ -26,8 +26,8 @@ public class NhlApiDaoTest {
 
     private String gameId;
     private NhlApiDao underTest;
-    private BoxscoreResponse expectedBoxscoreResponse;
-    private BoxscoreResponse actualBoxscoreResponse;
+    private Boxscore expectedBoxscore;
+    private Boxscore actualBoxscore;
     private PlayByPlay expectedPlayByPlay;
     private PlayByPlay actualPlayByPlay;
 
@@ -51,7 +51,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_inProgressGameId_boxscoreDataReturned() throws IOException {
         setupInProgressGameId();
-        setupExpectedInProgressBoxscoreResponse();
+        setupExpectedInProgressBoxscore();
         expectObjectMapperOnInProgressBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -60,7 +60,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_critGameId_boxscoreDataReturned() throws IOException {
         setupCritGameId();
-        setupExpectedCritBoxscoreResponse();
+        setupExpectedCritBoxscore();
         expectObjectMapperOnCritBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -69,7 +69,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_finalGameId_boxscoreDataReturned() throws IOException {
         setupFinalGameId();
-        setupExpectedFinalBoxscoreResponse();
+        setupExpectedFinalBoxscore();
         expectObjectMapperOnFinalBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -78,7 +78,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_futGameId_boxscoreDataReturned() throws IOException {
         setupFutureGameId();
-        setupExpectedFutBoxscoreResponse();
+        setupExpectedFutBoxscore();
         expectObjectMapperOnFutBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -87,7 +87,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_preGameId_boxscoreDataReturned() throws IOException {
         setupPreGameId();
-        setupExpectedPreBoxscoreResponse();
+        setupExpectedPreBoxscore();
         expectObjectMapperOnPreBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -96,7 +96,7 @@ public class NhlApiDaoTest {
     @Test
     public void getBoxscore_offGameId_boxscoreDataReturned() throws IOException {
         setupOffGameId();
-        setupExpectedOffBoxscoreResponse();
+        setupExpectedOffBoxscore();
         expectObjectMapperOnOffBoxscoreUrl();
         whenGetBoxscoreIsCalled();
         verifyBoxscore();
@@ -134,72 +134,72 @@ public class NhlApiDaoTest {
     }
 
     private void verifyBoxscore() {
-        assertEquals(expectedBoxscoreResponse, actualBoxscoreResponse);
+        assertEquals(expectedBoxscore, actualBoxscore);
     }
 
-    private void setupExpectedInProgressBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreLiveGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedInProgressBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreLiveGameResponse.json"),
+                Boxscore.class);
     }
 
-    private void setupExpectedCritBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedCritBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
+                Boxscore.class);
     }
 
-    private void setupExpectedFinalBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedFinalBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
+                Boxscore.class);
     }
 
-    private void setupExpectedFutBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedFutBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
+                Boxscore.class);
     }
 
-    private void setupExpectedPreBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscorePreGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedPreBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscorePreGameResponse.json"),
+                Boxscore.class);
     }
 
-    private void setupExpectedOffBoxscoreResponse() throws IOException {
-        expectedBoxscoreResponse = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreOffGameResponse.json"),
-                BoxscoreResponse.class);
+    private void setupExpectedOffBoxscore() throws IOException {
+        expectedBoxscore = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreOffGameResponse.json"),
+                Boxscore.class);
     }
 
     private void expectObjectMapperOnInProgressBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreLiveGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void expectObjectMapperOnCritBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void expectObjectMapperOnFinalBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void expectObjectMapperOnFutBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFutGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void expectObjectMapperOnPreBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscorePreGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void expectObjectMapperOnOffPlayByPlayUrl() throws IOException {
@@ -238,14 +238,14 @@ public class NhlApiDaoTest {
     }
 
     private void expectObjectMapperOnOffBoxscoreUrl() throws IOException {
-        when(mockObjectMapper.readValue(any(InputStream.class), eq(BoxscoreResponse.class)))
+        when(mockObjectMapper.readValue(any(InputStream.class), eq(Boxscore.class)))
                 .thenReturn(objectMapper.readValue(
                         new File("src/test/java/nhlgameupdatelambda/testData/boxscoreOffGameResponse.json"),
-                        BoxscoreResponse.class));
+                        Boxscore.class));
     }
 
     private void whenGetBoxscoreIsCalled() {
-        actualBoxscoreResponse = underTest.getBoxscore(gameId);
+        actualBoxscore = underTest.getBoxscore(gameId);
     }
 
     private void whenGetPlayByPlayIsCalled() {

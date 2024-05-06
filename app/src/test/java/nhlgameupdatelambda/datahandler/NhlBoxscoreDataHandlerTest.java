@@ -3,7 +3,7 @@ package nhlgameupdatelambda.datahandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.NhlData;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
 import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
@@ -33,8 +33,8 @@ public class NhlBoxscoreDataHandlerTest {
     private String gameId;
     private GameState expectedGameState;
     private GameState actualGameState;
-    private BoxscoreResponse nhlApiboxscore;
-    private BoxscoreResponse ddbBoxscore;
+    private Boxscore nhlApiboxscore;
+    private Boxscore ddbBoxscore;
     private NhlData nhlData;
 
     @Mock
@@ -163,22 +163,22 @@ public class NhlBoxscoreDataHandlerTest {
 
     private void setupBoxscoresBothOff() throws IOException {
         nhlApiboxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreOffGameResponse.json"),
-                BoxscoreResponse.class);
+                Boxscore.class);
         ddbBoxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreOffGameResponse.json"),
-                BoxscoreResponse.class);
+                Boxscore.class);
     }
 
     private void setupUpdatedNhlApiBoxscore() throws IOException {
         ddbBoxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
-                BoxscoreResponse.class);
+                Boxscore.class);
         nhlApiboxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
-                BoxscoreResponse.class);
+                Boxscore.class);
     }
 
     private void setupNhlData() {
         nhlData = NhlData.builder()
-                .nhlApiBoxscoreResponse(nhlApiboxscore)
-                .DdbBoxscoreResponse(ddbBoxscore)
+                .nhlApiBoxscore(nhlApiboxscore)
+                .ddbBoxscore(ddbBoxscore)
                 .build();
     }
 

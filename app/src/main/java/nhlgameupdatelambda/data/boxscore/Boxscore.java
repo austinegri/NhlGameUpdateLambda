@@ -19,11 +19,11 @@ import java.util.List;
 
 @Data
 @Builder
-@DynamoDbImmutable(builder = BoxscoreResponse.BoxscoreResponseBuilder.class)
+@DynamoDbImmutable(builder = Boxscore.BoxscoreBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BoxscoreResponse {
+public class Boxscore {
     @Getter(onMethod_={@DynamoDbPartitionKey})
     private final Integer id;
     private final Integer season;

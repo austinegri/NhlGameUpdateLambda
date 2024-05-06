@@ -2,14 +2,14 @@ package nhlgameupdatelambda.data;
 
 import lombok.Builder;
 import lombok.Data;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 
 @Builder
 @Data
 public class NhlData {
-    private BoxscoreResponse nhlApiBoxscoreResponse;
-    private BoxscoreResponse DdbBoxscoreResponse;
+    private Boxscore nhlApiBoxscore;
+    private Boxscore ddbBoxscore;
     private PlayByPlay nhlApiPlayByPlay;
     private PlayByPlay DdbPlayByPlay;
 }

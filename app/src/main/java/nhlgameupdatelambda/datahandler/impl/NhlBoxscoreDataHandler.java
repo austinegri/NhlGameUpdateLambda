@@ -3,7 +3,7 @@ package nhlgameupdatelambda.datahandler.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.NhlData;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
@@ -38,14 +38,14 @@ public class NhlBoxscoreDataHandler implements NhlDataHandler {
     @Override
     public void fetch(final NhlData nhlData, final String gameId) {
         // ToDo parallelize
-        nhlData.setNhlApiBoxscoreResponse(nhlApiDao.getBoxscore(gameId));
-        nhlData.setDdbBoxscoreResponse(ddbDao.getBoxscore(Integer.parseInt(gameId)));
+        nhlData.setNhlApiBoxscore(nhlApiDao.getBoxscore(gameId));
+        nhlData.setDdbBoxscore(ddbDao.getBoxscore(Integer.parseInt(gameId)));
     }
 
     @Override
     public GameState handle(final NhlData nhlData) {
-        final BoxscoreResponse nhlApiBoxscore = nhlData.getNhlApiBoxscoreResponse();
-        final BoxscoreResponse ddbBoxscore = nhlData.getDdbBoxscoreResponse();
+        final Boxscore nhlApiBoxscore = nhlData.getNhlApiBoxscore();
+        final Boxscore ddbBoxscore = nhlData.getDdbBoxscore();
 
         if (!nhlApiBoxscore.equals(ddbBoxscore)) {
             ddbDao.putBoxscore(nhlApiBoxscore);

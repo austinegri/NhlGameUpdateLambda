@@ -2,7 +2,7 @@ package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 
 import javax.inject.Inject;
@@ -33,14 +33,14 @@ public class NhlApiDao {
         this.objectMapper = objectMapper;
     }
 
-    public BoxscoreResponse getBoxscore(final String gameId) {
+    public Boxscore getBoxscore(final String gameId) {
         try {
             log.info("Getting Boxscore from NhlApi for gameId: " + gameId);
             final URLConnection urlConnection = getBoxscoreEndpoint(gameId)
                     .openConnection();
             addRequestProperties(urlConnection);
 
-            final BoxscoreResponse boxscore = objectMapper.readValue(urlConnection.getInputStream(), BoxscoreResponse.class);
+            final Boxscore boxscore = objectMapper.readValue(urlConnection.getInputStream(), Boxscore.class);
             log.info("Fetched Boxscore from NhlApi for gameId: " + boxscore.getId());
             return boxscore;
         } catch (final Exception e) {

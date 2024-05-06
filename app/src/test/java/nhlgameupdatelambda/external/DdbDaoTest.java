@@ -1,7 +1,7 @@
 package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import org.junit.After;
 import org.junit.Before;
@@ -25,19 +25,19 @@ import static org.mockito.Mockito.*;
 public class DdbDaoTest {
 
     private int gameId;
-    private BoxscoreResponse boxscoreItem;
+    private Boxscore boxscoreItem;
     private PlayByPlay playByPlayItem;
     private GetItemEnhancedRequest getItemRequest;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
-    private DynamoDbTable<BoxscoreResponse> mockBoxscoreTable;
+    private DynamoDbTable<Boxscore> mockBoxscoreTable;
     @Mock
     private DynamoDbTable<PlayByPlay> mockPlayByPlayTable;
 
     private DdbDao underTest;
-    private BoxscoreResponse actualBoxscoreResponse;
+    private Boxscore actualBoxscore;
     private PlayByPlay actualPlayByPlayResponse;
 
     @Before
@@ -51,7 +51,7 @@ public class DdbDaoTest {
         boxscoreItem = null;
         playByPlayItem = null;
         getItemRequest = null;
-        actualBoxscoreResponse = null;
+        actualBoxscore = null;
         actualPlayByPlayResponse = null;
         underTest = null;
     }
@@ -76,7 +76,7 @@ public class DdbDaoTest {
         setGetRequest();
         expectGetBoxscoreReturnsBoxscore();
         whenGetBoxscoreIsCalled();
-        validateBoxscoreResponse();
+        validateBoxscore();
     }
 
     @Test
@@ -121,11 +121,7 @@ public class DdbDaoTest {
 
     private void setBoxscoreItem() throws IOException {
         boxscoreItem = objectMapper.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreLiveGameResponse.json"),
-                BoxscoreResponse.class);
-//        updateBoxscoreRequest = UpdateItemEnhancedRequest.builder(BoxscoreResponse.class)
-//                .item(boxscoreItem)
-//                .ignoreNulls(true)
-//                .build();
+                Boxscore.class);
     }
 
     private void setPlayByPlayItem() throws IOException {
@@ -135,7 +131,6 @@ public class DdbDaoTest {
 
     private void verifyBoxscoreDdbPutBoxscore() {
         verify(mockBoxscoreTable, times(1)).putItem(boxscoreItem);
-//        verify(mockBoxscoreTable, times(1)).updateItem(updateBoxscoreRequest);
     }
 
     private void verifyPlayByPlayDdbPutPlayByPlay() {
@@ -155,7 +150,6 @@ public class DdbDaoTest {
                 .build())
                 .when(mockBoxscoreTable)
                 .putItem(boxscoreItem);
-//                .updateItem(updateBoxscoreRequest);
     }
 
     private void expectPutPlayByPlayThrowsException() {
@@ -197,15 +191,15 @@ public class DdbDaoTest {
     }
 
     private void whenGetBoxscoreIsCalled() {
-        actualBoxscoreResponse = underTest.getBoxscore(gameId);
+        actualBoxscore = underTest.getBoxscore(gameId);
     }
 
     private void whenGetPlayByPlayIsCalled() {
         actualPlayByPlayResponse = underTest.getPlayByPlay(gameId);
     }
 
-    private void validateBoxscoreResponse() {
-        assertEquals(boxscoreItem, actualBoxscoreResponse);
+    private void validateBoxscore() {
+        assertEquals(boxscoreItem, actualBoxscore);
     }
 
     private void validatePlayByPlayResponse() {

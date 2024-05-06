@@ -1,7 +1,7 @@
 package nhlgameupdatelambda.external;
 
 import lombok.extern.slf4j.Slf4j;
-import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
+import nhlgameupdatelambda.data.boxscore.Boxscore;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -13,17 +13,17 @@ import javax.inject.Inject;
 @Slf4j
 public class DdbDao {
 
-    private final DynamoDbTable<BoxscoreResponse> boxscoreDdbTable;
+    private final DynamoDbTable<Boxscore> boxscoreDdbTable;
     private final DynamoDbTable<PlayByPlay> playByPlayDdbTable;
 
     @Inject
-    public DdbDao(final DynamoDbTable<BoxscoreResponse> boxscoreDdbTable,
+    public DdbDao(final DynamoDbTable<Boxscore> boxscoreDdbTable,
                   final DynamoDbTable<PlayByPlay> playByPlayDdbTable) {
         this.boxscoreDdbTable = boxscoreDdbTable;
         this.playByPlayDdbTable = playByPlayDdbTable;
     }
 
-    public void putBoxscore(final BoxscoreResponse boxscoreItem) {
+    public void putBoxscore(final Boxscore boxscoreItem) {
         try {
             log.info("Putting record to BoxscoreTable with GameId: " + boxscoreItem.getId());
             boxscoreDdbTable.putItem(boxscoreItem);
@@ -33,7 +33,7 @@ public class DdbDao {
         }
     }
 
-    public BoxscoreResponse getBoxscore(final int gameId) {
+    public Boxscore getBoxscore(final int gameId) {
         try {
             final GetItemEnhancedRequest getItemRequest = GetItemEnhancedRequest.builder()
                     .key(Key.builder()
@@ -42,7 +42,7 @@ public class DdbDao {
                     .consistentRead(true) // get most recent write value
                     .build();
             log.info("Getting record from BoxscoreTable with GameId: " + gameId);
-            final BoxscoreResponse boxscoreItem = boxscoreDdbTable.getItem(getItemRequest);
+            final Boxscore boxscoreItem = boxscoreDdbTable.getItem(getItemRequest);
             log.info("Successfully retrieved record from BoxscoreTable with GameId: " + gameId);
             return boxscoreItem;
         } catch (final DynamoDbException e) {
