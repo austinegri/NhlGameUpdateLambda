@@ -1,9 +1,10 @@
 package nhlgameupdatelambda.orchestrator;
 
 import com.google.common.collect.ImmutableList;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
-import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
+import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -81,24 +83,24 @@ public class NhlGameUpdateOrchestratorTest {
 
     private void expectAllDataHandlersCalledReturnOff() throws IOException {
         final GameState gameState = GameState.OFF;
-        when(mockNhlDataHandler.handle(gameId))
+        when(mockNhlDataHandler.handle(any(NhlData.class)))
                 .thenReturn(gameState);
-        when(mockNhlBoxscoreDataHandler.handle(gameId))
+        when(mockNhlBoxscoreDataHandler.handle(any(NhlData.class)))
                 .thenReturn(gameState);
     }
 
     private void expectOneDataHandlerThrowsException() throws IOException {
         final GameState gameState = GameState.OFF;
-        lenient().when(mockNhlDataHandler.handle(gameId))
+        lenient().when(mockNhlDataHandler.handle(any(NhlData.class)))
                 .thenReturn(gameState);
-        lenient().when(mockNhlBoxscoreDataHandler.handle(gameId))
+        lenient().when(mockNhlBoxscoreDataHandler.handle(any(NhlData.class)))
                 .thenThrow(new RuntimeException());
     }
 
     private void expectAllDataHandlersThrowException() throws IOException {
-        lenient().when(mockNhlDataHandler.handle(gameId))
+        lenient().when(mockNhlDataHandler.handle(any(NhlData.class)))
                 .thenThrow(new RuntimeException());
-        lenient().when(mockNhlBoxscoreDataHandler.handle(gameId))
+        lenient().when(mockNhlBoxscoreDataHandler.handle(any(NhlData.class)))
                 .thenThrow(new RuntimeException());
     }
 

@@ -2,6 +2,7 @@ package nhlgameupdatelambda.datahandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.sns.GamePlayUpdate;
@@ -36,6 +37,7 @@ public class NhlPlayByPlayDataHandlerTest {
     private GameState actualGameState;
     private PlayByPlay nhlApiPlayByPlay;
     private PlayByPlay ddbPlaybyPlay;
+    private NhlData nhlData;
 
     @Mock
     private NhlApiDao mockNhlApiDao;
@@ -47,6 +49,8 @@ public class NhlPlayByPlayDataHandlerTest {
     private NhlPlayByPlayDataHandler underTest;
     @Before
     public void setUp() throws Exception {
+        nhlData = NhlData.builder()
+                .build();
         underTest = new NhlPlayByPlayDataHandler(GAME_PLAY_UPDATE_TOPIC_ARN, mockNhlApiDao, mockDdbDao,
                 mockSnsClient);
     }
@@ -59,16 +63,16 @@ public class NhlPlayByPlayDataHandlerTest {
         actualGameState = null;
         nhlApiPlayByPlay = null;
         ddbPlaybyPlay = null;
+        nhlData = null;
     }
 
     @Test
     public void update_playByPlayReturnsSamePlayByPlays_GameStateOffReturned() throws IOException {
         setGameId();
         setupPlayByPlaysBothOff();
+        setupNhlData();
         setupExpectedGameStateOff();
-        expectNhlApiDaoReturnsPlayByPlay();
-        expectDdbDaoReturnsPlayByPlay();
-        whenNhlGameUpdateOrchestratorIsCalled();
+        whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
     }
 
@@ -76,11 +80,10 @@ public class NhlPlayByPlayDataHandlerTest {
     public void update_playByPlayReturnsUpdatedPlayByPlays_GameStateOffReturned() throws IOException {
         setGameId();
         setupUpdatedNhlApiPlayByPlay();
+        setupNhlData();
         setupExpectedGameStateFinal();
-        expectNhlApiDaoReturnsPlayByPlay();
-        expectDdbDaoReturnsPlayByPlay();
         expectSnsClientUpdate();
-        whenNhlGameUpdateOrchestratorIsCalled();
+        whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
         verifyDdbPlayByPlayPutCalled();
     }
@@ -89,17 +92,29 @@ public class NhlPlayByPlayDataHandlerTest {
     public void update_snsException_GameStateOffReturned() throws IOException {
         setGameId();
         setupUpdatedNhlApiPlayByPlay();
+        setupNhlData();
         setupExpectedGameStateFinal();
-        expectNhlApiDaoReturnsPlayByPlay();
-        expectDdbDaoReturnsPlayByPlay();
         expectSnsClientUpdateThrowsException();
-        whenNhlGameUpdateOrchestratorIsCalled();
+        whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
         verifyDdbPlayByPlayPutCalled();
     }
 
-    private void whenNhlGameUpdateOrchestratorIsCalled() {
-        actualGameState = underTest.handle(gameId);
+    @Test
+    public void fetch_getDataFromNhlApi_nhlDataUpdated() throws IOException {
+        setGameId();
+        setupPlayByPlaysBothOff();
+        expectNhlApiDaoReturnsPlayByPlay();
+        expectDdbDaoReturnsPlayByPlay();
+        whenNhlPlayByPlayHandlerFetchIsCalled();
+    }
+
+    private void whenNhlPlayByPlayHandlerIsCalled() {
+        actualGameState = underTest.handle(nhlData);
+    }
+
+    private void whenNhlPlayByPlayHandlerFetchIsCalled() {
+        underTest.fetch(nhlData, gameId);
     }
 
     private void expectNhlApiDaoReturnsPlayByPlay() throws IOException {
@@ -164,6 +179,13 @@ public class NhlPlayByPlayDataHandlerTest {
                 PlayByPlay.class);
         nhlApiPlayByPlay = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayFinalGameResponse.json"),
                 PlayByPlay.class);
+    }
+
+    private void setupNhlData() {
+        nhlData = NhlData.builder()
+                .nhlApiPlayByPlay(nhlApiPlayByPlay)
+                .DdbPlayByPlay(ddbPlaybyPlay)
+                .build();
     }
 
     private void setupExpectedGameStateOff() {

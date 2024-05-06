@@ -2,6 +2,7 @@ package nhlgameupdatelambda.datahandler.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
@@ -20,7 +21,6 @@ public class NhlBoxscoreDataHandler implements NhlDataHandler {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-
     private final String gameStateTopicArn;
     private final NhlApiDao nhlApiDao;
     private final DdbDao ddbDao;
@@ -36,15 +36,22 @@ public class NhlBoxscoreDataHandler implements NhlDataHandler {
     }
 
     @Override
-    public GameState handle(final String gameId) {
-        final BoxscoreResponse nhlApiBoxscore = nhlApiDao.getBoxscore(gameId);
-        final BoxscoreResponse ddbBoxscore = ddbDao.getBoxscore(Integer.parseInt(gameId));
+    public void fetch(final NhlData nhlData, final String gameId) {
+        // ToDo parallelize
+        nhlData.setNhlApiBoxscoreResponse(nhlApiDao.getBoxscore(gameId));
+        nhlData.setDdbBoxscoreResponse(ddbDao.getBoxscore(Integer.parseInt(gameId)));
+    }
+
+    @Override
+    public GameState handle(final NhlData nhlData) {
+        final BoxscoreResponse nhlApiBoxscore = nhlData.getNhlApiBoxscoreResponse();
+        final BoxscoreResponse ddbBoxscore = nhlData.getDdbBoxscoreResponse();
 
         if (!nhlApiBoxscore.equals(ddbBoxscore)) {
             ddbDao.putBoxscore(nhlApiBoxscore);
 
             if (nhlApiBoxscore.getGameState() != ddbBoxscore.getGameState()) {
-                publishGameStateUpdate(gameId, nhlApiBoxscore.getGameState());
+                publishGameStateUpdate(nhlApiBoxscore.getId().toString(), nhlApiBoxscore.getGameState());
             }
         }
 

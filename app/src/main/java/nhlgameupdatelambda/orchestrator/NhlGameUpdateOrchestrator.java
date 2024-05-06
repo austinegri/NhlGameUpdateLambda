@@ -1,6 +1,7 @@
 package nhlgameupdatelambda.orchestrator;
 
 import lombok.extern.slf4j.Slf4j;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
 
@@ -21,10 +22,18 @@ public class NhlGameUpdateOrchestrator {
     }
 
     public GameState update(final String gameId) {
+        final NhlData nhlData = NhlData.builder()
+                .build();
+
+        //ToDo parallelize
+        for (final NhlDataHandler nhlDataHandler : nhlDataHandlers) {
+            nhlDataHandler.fetch(nhlData, gameId);
+        }
+
         final Set<GameState> gameStateResponses = nhlDataHandlers.parallelStream()
                 .map(nhlDataHandler -> {
                     try {
-                        return nhlDataHandler.handle(gameId);
+                        return nhlDataHandler.handle(nhlData);
                     } catch (final Exception e) {
                         throw new RuntimeException(String.format("Exception when calling %s.handle for gameId %s",
                                 nhlDataHandler.getClass(), gameId), e);

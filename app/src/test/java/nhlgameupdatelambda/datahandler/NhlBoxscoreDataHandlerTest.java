@@ -2,6 +2,7 @@ package nhlgameupdatelambda.datahandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.boxscore.BoxscoreResponse;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.sns.SnsGameStateUpdate;
@@ -34,6 +35,7 @@ public class NhlBoxscoreDataHandlerTest {
     private GameState actualGameState;
     private BoxscoreResponse nhlApiboxscore;
     private BoxscoreResponse ddbBoxscore;
+    private NhlData nhlData;
 
     @Mock
     private NhlApiDao mockNhlApiDao;
@@ -45,6 +47,8 @@ public class NhlBoxscoreDataHandlerTest {
     private NhlBoxscoreDataHandler underTest;
     @Before
     public void setUp() throws Exception {
+        nhlData = NhlData.builder()
+                .build();
         underTest = new NhlBoxscoreDataHandler(GAME_STATE_TOPIC_ARN,
                 mockNhlApiDao, mockDdbDao, mockSnsClient);
     }
@@ -57,47 +61,54 @@ public class NhlBoxscoreDataHandlerTest {
         actualGameState = null;
         nhlApiboxscore = null;
         ddbBoxscore = null;
+        nhlData = null;
     }
 
     @Test
-    public void update_boxscoreReturnsSameBoxscores_GameStateOffReturned() throws IOException {
+    public void handle_boxscoreReturnsSameBoxscores_GameStateOffReturned() throws IOException {
+        setupBoxscoresBothOff();
+        setupNhlData();
+        setupExpectedGameStateOff();
+        whenNhlBoxscoreHandlerHandleIsCalled();
+        verifyGameState();
+    }
+
+    @Test
+    public void handle_boxscoreReturnsUpdatedBoxscores_GameStateOffReturned() throws IOException {
+        setupUpdatedNhlApiBoxscore();
+        setupNhlData();
+        setupExpectedGameStateFinal();
+        expectSnsClientUpdate();
+        whenNhlBoxscoreHandlerHandleIsCalled();
+        verifyGameState();
+        verifyDdbBoxscorePutCalled();
+    }
+
+    @Test
+    public void handle_snsClientThrowsException_GameStateOffReturned() throws IOException {
+        setupUpdatedNhlApiBoxscore();
+        setupNhlData();
+        setupExpectedGameStateFinal();
+        expectSnsClientUpdateThrowsException();
+        whenNhlBoxscoreHandlerHandleIsCalled();
+        verifyGameState();
+        verifyDdbBoxscorePutCalled();
+    }
+
+    @Test public void fetch_getDataFromNhlApi_nhlDataUpdated() throws IOException {
         setGameId();
         setupBoxscoresBothOff();
-        setupExpectedGameStateOff();
         expectNhlApiDaoReturnsBoxscore();
         expectDdbDaoReturnsBoxscore();
-        whenNhlBoxscoreHandlerIsCalled();
-        verifyGameState();
+        whenNhlBoxscoreHandlerFetchIsCalled();
     }
 
-    @Test
-    public void update_boxscoreReturnsUpdatedBoxscores_GameStateOffReturned() throws IOException {
-        setGameId();
-        setupUpdatedNhlApiBoxscore();
-        setupExpectedGameStateFinal();
-        expectNhlApiDaoReturnsBoxscore();
-        expectDdbDaoReturnsBoxscore();
-        expectSnsClientUpdate();
-        whenNhlBoxscoreHandlerIsCalled();
-        verifyGameState();
-        verifyDdbBoxscorePutCalled();
+    private void whenNhlBoxscoreHandlerHandleIsCalled() {
+        actualGameState = underTest.handle(nhlData);
     }
 
-    @Test
-    public void update_snsClientThrowsException_GameStateOffReturned() throws IOException {
-        setGameId();
-        setupUpdatedNhlApiBoxscore();
-        setupExpectedGameStateFinal();
-        expectNhlApiDaoReturnsBoxscore();
-        expectDdbDaoReturnsBoxscore();
-        expectSnsClientUpdateThrowsException();
-        whenNhlBoxscoreHandlerIsCalled();
-        verifyGameState();
-        verifyDdbBoxscorePutCalled();
-    }
-
-    private void whenNhlBoxscoreHandlerIsCalled() {
-        actualGameState = underTest.handle(gameId);
+    private void whenNhlBoxscoreHandlerFetchIsCalled() {
+        underTest.fetch(nhlData, gameId);
     }
 
     private void expectNhlApiDaoReturnsBoxscore() throws IOException {
@@ -162,6 +173,13 @@ public class NhlBoxscoreDataHandlerTest {
                 BoxscoreResponse.class);
         nhlApiboxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
                 BoxscoreResponse.class);
+    }
+
+    private void setupNhlData() {
+        nhlData = NhlData.builder()
+                .nhlApiBoxscoreResponse(nhlApiboxscore)
+                .DdbBoxscoreResponse(ddbBoxscore)
+                .build();
     }
 
     private void setupExpectedGameStateOff() {

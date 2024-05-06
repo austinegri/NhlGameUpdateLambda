@@ -1,8 +1,9 @@
 package nhlgameupdatelambda.datahandler;
 
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
-import nhlgameupdatelambda.external.NhlApiDao;
 
 public interface NhlDataHandler {
-    public GameState handle(final String gameId);
+    void fetch(final NhlData nhlData, final String gameId);
+    GameState handle(final NhlData nhlData);
 }

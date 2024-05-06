@@ -3,6 +3,7 @@ package nhlgameupdatelambda.datahandler.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.data.playbyplay.Play;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
@@ -35,9 +36,16 @@ public class NhlPlayByPlayDataHandler implements NhlDataHandler {
     }
 
     @Override
-    public GameState handle(String gameId) {
-        final PlayByPlay nhlApiPlayByPlay = nhlApiDao.getPlayByPlay(gameId);
-        final PlayByPlay ddbPlayByPlay = ddbDao.getPlayByPlay(Integer.parseInt(gameId));
+    public void fetch(final NhlData nhlData, final String gameId) {
+        // ToDo parallelize
+        nhlData.setNhlApiPlayByPlay(nhlApiDao.getPlayByPlay(gameId));
+        nhlData.setDdbPlayByPlay(ddbDao.getPlayByPlay(Integer.parseInt(gameId)));
+    }
+
+    @Override
+    public GameState handle(final NhlData nhlData) {
+        final PlayByPlay nhlApiPlayByPlay = nhlData.getNhlApiPlayByPlay();
+        final PlayByPlay ddbPlayByPlay = nhlData.getDdbPlayByPlay();
 
         if(!nhlApiPlayByPlay.equals(ddbPlayByPlay)) {
             ddbDao.putPlayByPlay(nhlApiPlayByPlay);
@@ -45,7 +53,7 @@ public class NhlPlayByPlayDataHandler implements NhlDataHandler {
             final Sets.SetView<Play> updatedPlays = getUpdatedPlays(ddbPlayByPlay.getPlays(), nhlApiPlayByPlay.getPlays());
 
             if (!updatedPlays.isEmpty()) {
-                publishPlayUpdate(gameId, updatedPlays);
+                publishPlayUpdate(nhlApiPlayByPlay.getId().toString(), updatedPlays);
             }
         }
 
