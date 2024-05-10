@@ -89,6 +89,18 @@ public class NhlPlayByPlayDataHandlerTest {
     }
 
     @Test
+    public void update_nullDdbPlayByPlayReturnsUpdatedPlayByPlays_GameStateOffReturned() throws IOException {
+        setGameId();
+        setupNullDddbPlayByPlay();
+        setupNhlData();
+        setupExpectedGameStateFinal();
+        expectSnsClientUpdate();
+        whenNhlPlayByPlayHandlerIsCalled();
+        verifyGameState();
+        verifyDdbPlayByPlayPutCalled();
+    }
+
+    @Test
     public void update_snsException_GameStateOffReturned() throws IOException {
         setGameId();
         setupUpdatedNhlApiPlayByPlay();
@@ -177,6 +189,12 @@ public class NhlPlayByPlayDataHandlerTest {
     private void setupUpdatedNhlApiPlayByPlay() throws IOException {
         ddbPlaybyPlay = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayLiveGameResponse.json"),
                 PlayByPlay.class);
+        nhlApiPlayByPlay = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayFinalGameResponse.json"),
+                PlayByPlay.class);
+    }
+
+    private void setupNullDddbPlayByPlay() throws IOException {
+        ddbPlaybyPlay = null;
         nhlApiPlayByPlay = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayFinalGameResponse.json"),
                 PlayByPlay.class);
     }

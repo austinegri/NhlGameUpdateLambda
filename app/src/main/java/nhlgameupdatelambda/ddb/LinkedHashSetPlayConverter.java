@@ -22,7 +22,8 @@ public final class LinkedHashSetPlayConverter implements AttributeConverter<Link
     @Override
     public AttributeValue transformFrom(LinkedHashSet<Play> input) throws UncheckedIOException{
         // Convert LinkedHashSet to a list of attributes for storing in DynamoDB
-        if (input == null) {
+        if (input == null
+                || input.isEmpty()) {
             return AttributeValue.fromNul(true);
         }
         return AttributeValue.fromL(input.stream()
@@ -33,7 +34,7 @@ public final class LinkedHashSetPlayConverter implements AttributeConverter<Link
     @Override
     public LinkedHashSet<Play> transformTo(AttributeValue input) {
         if (input == null) {
-            return null;
+            return new LinkedHashSet<>();
         }
 
         return input.l()

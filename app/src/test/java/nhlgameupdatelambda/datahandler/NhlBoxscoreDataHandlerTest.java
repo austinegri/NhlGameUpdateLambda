@@ -85,6 +85,17 @@ public class NhlBoxscoreDataHandlerTest {
     }
 
     @Test
+    public void handle_noDdbBoxscore_GameStateOffReturned() throws IOException {
+        setupNullDdbBoxscore();
+        setupNhlData();
+        setupExpectedGameStateFinal();
+        expectSnsClientUpdate();
+        whenNhlBoxscoreHandlerHandleIsCalled();
+        verifyGameState();
+        verifyDdbBoxscorePutCalled();
+    }
+
+    @Test
     public void handle_snsClientThrowsException_GameStateOffReturned() throws IOException {
         setupUpdatedNhlApiBoxscore();
         setupNhlData();
@@ -171,6 +182,12 @@ public class NhlBoxscoreDataHandlerTest {
     private void setupUpdatedNhlApiBoxscore() throws IOException {
         ddbBoxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreCritGameResponse.json"),
                 Boxscore.class);
+        nhlApiboxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
+                Boxscore.class);
+    }
+
+    private void setupNullDdbBoxscore() throws IOException {
+        ddbBoxscore = null;
         nhlApiboxscore = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/boxscoreFinalGameResponse.json"),
                 Boxscore.class);
     }

@@ -50,7 +50,9 @@ public class NhlPlayByPlayDataHandler implements NhlDataHandler {
         if(!nhlApiPlayByPlay.equals(ddbPlayByPlay)) {
             ddbDao.putPlayByPlay(nhlApiPlayByPlay);
 
-            final Sets.SetView<Play> updatedPlays = getUpdatedPlays(ddbPlayByPlay.getPlays(), nhlApiPlayByPlay.getPlays());
+            final LinkedHashSet<Play> oldPlays = ddbPlayByPlay == null ? new LinkedHashSet<>() :
+                    ddbPlayByPlay.getPlays();
+            final Sets.SetView<Play> updatedPlays = getUpdatedPlays(oldPlays, nhlApiPlayByPlay.getPlays());
 
             if (!updatedPlays.isEmpty()) {
                 publishPlayUpdate(nhlApiPlayByPlay.getId().toString(), updatedPlays);

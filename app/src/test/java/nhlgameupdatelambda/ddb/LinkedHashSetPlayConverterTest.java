@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import software.amazon.awssdk.enhanced.dynamodb.AttributeValueType;
+import software.amazon.awssdk.enhanced.dynamodb.EnhancedType;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.LinkedHashSet;
@@ -66,4 +68,31 @@ public class LinkedHashSetPlayConverterTest {
         assertEquals(PLAYS, actualPlays);
     }
 
+    @Test
+    public void transformFrom_nullAttributeValue_convertedSuccessfully() {
+        AttributeValue converted = underTest.transformFrom(null);
+        assertEquals(AttributeValue.fromNul(true), converted);
+    }
+
+    @Test
+    public void transformFrom_emptyAttributeValue_convertedSuccessfully() {
+        AttributeValue converted = underTest.transformFrom(new LinkedHashSet<>());
+        assertEquals(AttributeValue.fromNul(true), converted);
+    }
+
+    @Test
+    public void transformTo_playsIsEmpty_convertedSuccessfully() {
+        actualPlays = underTest.transformTo(null);
+        assertEquals(new LinkedHashSet<>(), actualPlays);
+    }
+
+    @Test
+    public void attributeValueType_returnsL() {
+        assertEquals(AttributeValueType.L, underTest.attributeValueType());
+    }
+
+    @Test
+    public void type_returnLinkedHashSetEnhancedType() {
+        assertEquals(EnhancedType.of(LinkedHashSet.class), underTest.type());
+    }
 }

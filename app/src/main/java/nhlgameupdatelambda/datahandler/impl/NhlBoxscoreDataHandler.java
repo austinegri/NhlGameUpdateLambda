@@ -50,7 +50,8 @@ public class NhlBoxscoreDataHandler implements NhlDataHandler {
         if (!nhlApiBoxscore.equals(ddbBoxscore)) {
             ddbDao.putBoxscore(nhlApiBoxscore);
 
-            if (nhlApiBoxscore.getGameState() != ddbBoxscore.getGameState()) {
+           if (ddbBoxscore == null
+                    || nhlApiBoxscore.getGameState() != ddbBoxscore.getGameState()) {
                 publishGameStateUpdate(nhlApiBoxscore.getId().toString(), nhlApiBoxscore.getGameState());
             }
         }
