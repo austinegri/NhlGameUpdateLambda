@@ -61,8 +61,9 @@ public class NhlPlayByPlayDataHandler implements NhlDataHandler {
     }
 
     private void handleSnsUpdate(final PlayByPlay ddbPlayByPlay, final PlayByPlay nhlApiPlayByPlay) {
-        final LinkedHashSet<Play> oldPlays = ddbPlayByPlay == null ? new LinkedHashSet<>() :
-                ddbPlayByPlay.getPlays();
+        final LinkedHashSet<Play> oldPlays = ddbPlayByPlay == null || ddbPlayByPlay.getPlays() == null ?
+                new LinkedHashSet<>() : ddbPlayByPlay.getPlays();
+
         final Sets.SetView<Play> updatedPlays = getUpdatedPlays(oldPlays, nhlApiPlayByPlay.getPlays());
 
         if (!updatedPlays.isEmpty()) {

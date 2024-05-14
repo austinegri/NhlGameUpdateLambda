@@ -55,27 +55,8 @@ public class NhlPlayByPlayDataHandlerTest {
             .plays(ImmutableList.of(PLAY1).stream()
                     .collect(Collectors.toCollection(LinkedHashSet::new)))
             .build();
-    private static final PlayByPlay PLAY_BY_PLAY2 = PlayByPlay.builder()
-            .id(Integer.valueOf(GAME_ID))
-            .gameState(GameState.FINAL)
-            .plays(ImmutableList.of(PLAY1,
-                            PLAY2)
-                    .stream()
-                    .collect(Collectors.toCollection(LinkedHashSet::new)))
-            .build();
-
-    private static final PlayByPlay PLAY_BY_PLAY3 = PlayByPlay.builder()
-            .id(Integer.valueOf(GAME_ID))
-            .gameState(GameState.FINAL)
-            .plays(ImmutableList.of(PLAY1)
-                    .stream()
-                    .collect(Collectors.toCollection(LinkedHashSet::new)))
-            .build();
-
-    private static final PlayByPlay PLAY_BY_PLAY_NULL_PLAYS = PlayByPlay.builder()
-            .id(Integer.valueOf(GAME_ID))
-            .gameState(GameState.PRE)
-            .build();
+    private LinkedHashSet<Play> ddbPlays;
+    private LinkedHashSet<Play> nhlApiPlays;
     private GameState expectedGameState;
     private GameState actualGameState;
     private PlayByPlay nhlApiPlayByPlay;
@@ -107,22 +88,25 @@ public class NhlPlayByPlayDataHandlerTest {
         nhlApiPlayByPlay = null;
         ddbPlaybyPlay = null;
         nhlData = null;
+        ddbPlays = null;
+        nhlApiPlays = null;
     }
 
     @Test
-    public void update_playByPlayReturnsSamePlayByPlays_GameStateOffReturned() throws IOException {
-        setupPlayByPlaysBothOff();
+    public void update_playByPlayReturnsSamePlayByPlays_GameStateFinalReturned() throws IOException {
+        setupSamePlayByPlay();
         setupNhlData();
-        setupExpectedGameStateOff();
+        setupExpectedGameStateFinal();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
     }
 
     @Test
     public void update_playByPlayReturnsUpdatedPlayByPlays_GameStateOffReturned() throws IOException {
-        setupUpdatedNhlApiPlayByPlay();
+        setupUpdatedPlays();
+        setupUpdatedPlayByPlay();
         setupNhlData();
-        setupExpectedGameStateFinal();
+        setupExpectedGameStateLive();
         expectSnsClientUpdate();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
@@ -130,10 +114,23 @@ public class NhlPlayByPlayDataHandlerTest {
     }
 
     @Test
-    public void update_noSnsUpdateForSamePlays_GameStateFinalReturned() throws IOException {
-        setupUpdatedNhlApiPlayByPlayWithSamePlays();
+    public void update_nullDdbPlays_GameStateFinalReturned() throws IOException {
+        setupNullDddbPlayByPlay();
+        setupNhlApiPlays();
+        setupSamePlayByPlay();
         setupNhlData();
         setupExpectedGameStateFinal();
+        whenNhlPlayByPlayHandlerIsCalled();
+        verifyGameState();
+        verifyDdbPlayByPlayPutCalled();
+    }
+
+    @Test
+    public void update_noSnsUpdateForSamePlays_GameStateFinalReturned() throws IOException {
+        setupSamePlays();
+        setupUpdatedPlayByPlay();
+        setupNhlData();
+        setupExpectedGameStateLive();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
         verifyDdbPlayByPlayPutCalled();
@@ -143,7 +140,7 @@ public class NhlPlayByPlayDataHandlerTest {
     public void update_nullDdbPlayByPlayReturnsUpdatedPlayByPlays_GameStateOffReturned() throws IOException {
         setupNullDddbPlayByPlay();
         setupNhlData();
-        setupExpectedGameStateFinal();
+        setupExpectedGameStateLive();
         expectSnsClientUpdate();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
@@ -152,19 +149,22 @@ public class NhlPlayByPlayDataHandlerTest {
 
     @Test
     public void update_nullNhlApiPlayByPlayPlays_GameStatePreReturned() throws IOException {
-        setupNullPlays();
+        setupNullDdbPlays();
+        setupNullNhlApiPlays();
+        setupUpdatedPlayByPlay();
         setupNhlData();
-        setupExpectedGameStatePre();
+        setupExpectedGameStateLive();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
         verifyDdbPlayByPlayPutCalled();
     }
 
     @Test
-    public void update_snsException_GameStateOffReturned() throws IOException {
-        setupUpdatedNhlApiPlayByPlay();
+    public void update_snsException_GameStateFinalReturned() throws IOException {
+        setupUpdatedPlays();
+        setupUpdatedPlayByPlay();
         setupNhlData();
-        setupExpectedGameStateFinal();
+        setupExpectedGameStateLive();
         expectSnsClientUpdateThrowsException();
         whenNhlPlayByPlayHandlerIsCalled();
         verifyGameState();
@@ -240,25 +240,9 @@ public class NhlPlayByPlayDataHandlerTest {
                 PlayByPlay.class);
     }
 
-    private void setupUpdatedNhlApiPlayByPlay() throws IOException {
-        ddbPlaybyPlay = PLAY_BY_PLAY1;
-        nhlApiPlayByPlay = PLAY_BY_PLAY2;
-    }
-
-    private void setupUpdatedNhlApiPlayByPlayWithSamePlays() throws IOException {
-        ddbPlaybyPlay = PLAY_BY_PLAY1;
-        nhlApiPlayByPlay = PLAY_BY_PLAY3;
-    }
-
     private void setupNullDddbPlayByPlay() throws IOException {
         ddbPlaybyPlay = null;
-        nhlApiPlayByPlay = OBJECT_MAPPER.readValue(new File("src/test/java/nhlgameupdatelambda/testData/playByPlayFinalGameResponse.json"),
-                PlayByPlay.class);
-    }
-
-    private void setupNullPlays() throws IOException {
-        ddbPlaybyPlay = null;
-        nhlApiPlayByPlay = PLAY_BY_PLAY_NULL_PLAYS;
+        nhlApiPlayByPlay = PLAY_BY_PLAY1;
     }
 
     private void setupNhlData() {
@@ -268,16 +252,74 @@ public class NhlPlayByPlayDataHandlerTest {
                 .build();
     }
 
-    private void setupExpectedGameStateOff() {
-        expectedGameState = GameState.OFF;
-    }
-
     private void setupExpectedGameStateFinal() {
         expectedGameState = GameState.FINAL;
     }
 
     private void setupExpectedGameStatePre() {
         expectedGameState = GameState.PRE;
+    }
+
+    private void setupExpectedGameStateLive() {
+        expectedGameState = GameState.LIVE;
+    }
+
+    private void setupNullDdbPlays() {
+        ddbPlays = null;
+    }
+
+    private void setupNullNhlApiPlays() {
+        nhlApiPlays = null;
+    }
+
+    private void setupNhlApiPlays() {
+        nhlApiPlays = ImmutableList.of(PLAY1, PLAY2)
+                .stream()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private void setupSamePlays() {
+        nhlApiPlays = ImmutableList.of(PLAY1, PLAY2)
+                .stream()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        ddbPlays = ImmutableList.of(PLAY1, PLAY2)
+                .stream()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private void setupUpdatedPlays() {
+        nhlApiPlays = ImmutableList.of(PLAY1, PLAY2)
+                .stream()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        ddbPlays = ImmutableList.of(PLAY1)
+                .stream()
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private void setupSamePlayByPlay() {
+        nhlApiPlayByPlay = PlayByPlay.builder()
+                .id(Integer.valueOf(GAME_ID))
+                .gameState(GameState.FINAL)
+                .plays(nhlApiPlays)
+                .build();
+        ddbPlaybyPlay = PlayByPlay.builder()
+                .id(Integer.valueOf(GAME_ID))
+                .gameState(GameState.FINAL)
+                .plays(ddbPlays)
+                .build();
+    }
+
+    private void setupUpdatedPlayByPlay() {
+        nhlApiPlayByPlay = PlayByPlay.builder()
+                .id(Integer.valueOf(GAME_ID))
+                .gameState(GameState.LIVE)
+                .plays(nhlApiPlays)
+                .build();
+        ddbPlaybyPlay = PlayByPlay.builder()
+                .id(Integer.valueOf(GAME_ID))
+                .gameState(GameState.PRE)
+                .plays(ddbPlays)
+                .build();
     }
 
     private void verifyGameState() {
