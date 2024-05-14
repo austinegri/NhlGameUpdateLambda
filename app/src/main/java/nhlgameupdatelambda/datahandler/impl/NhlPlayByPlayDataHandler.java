@@ -47,19 +47,27 @@ public class NhlPlayByPlayDataHandler implements NhlDataHandler {
         final PlayByPlay nhlApiPlayByPlay = nhlData.getNhlApiPlayByPlay();
         final PlayByPlay ddbPlayByPlay = nhlData.getDdbPlayByPlay();
 
-        if(!nhlApiPlayByPlay.equals(ddbPlayByPlay)) {
-            ddbDao.putPlayByPlay(nhlApiPlayByPlay);
+        if(nhlApiPlayByPlay.equals(ddbPlayByPlay)) {
+            return nhlApiPlayByPlay.getGameState();
+        }
 
-            final LinkedHashSet<Play> oldPlays = ddbPlayByPlay == null ? new LinkedHashSet<>() :
-                    ddbPlayByPlay.getPlays();
-            final Sets.SetView<Play> updatedPlays = getUpdatedPlays(oldPlays, nhlApiPlayByPlay.getPlays());
+        ddbDao.putPlayByPlay(nhlApiPlayByPlay);
 
-            if (!updatedPlays.isEmpty()) {
-                publishPlayUpdate(nhlApiPlayByPlay.getId().toString(), updatedPlays);
-            }
+        if (nhlApiPlayByPlay.getPlays() != null) {
+            handleSnsUpdate(ddbPlayByPlay, nhlApiPlayByPlay);
         }
 
         return nhlApiPlayByPlay.getGameState();
+    }
+
+    private void handleSnsUpdate(final PlayByPlay ddbPlayByPlay, final PlayByPlay nhlApiPlayByPlay) {
+        final LinkedHashSet<Play> oldPlays = ddbPlayByPlay == null ? new LinkedHashSet<>() :
+                ddbPlayByPlay.getPlays();
+        final Sets.SetView<Play> updatedPlays = getUpdatedPlays(oldPlays, nhlApiPlayByPlay.getPlays());
+
+        if (!updatedPlays.isEmpty()) {
+            publishPlayUpdate(nhlApiPlayByPlay.getId().toString(), updatedPlays);
+        }
     }
 
     private Sets.SetView<Play> getUpdatedPlays(final LinkedHashSet<Play> oldPlays, final LinkedHashSet<Play> newPlays) {
