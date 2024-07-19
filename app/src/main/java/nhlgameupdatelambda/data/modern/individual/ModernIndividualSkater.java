@@ -1,20 +1,20 @@
-package nhlgameupdatelambda.data.advanced.individual;
+package nhlgameupdatelambda.data.modern.individual;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
-import nhlgameupdatelambda.data.boxscore.PlayerByGameStats;
+import nhlgameupdatelambda.data.boxscore.player.Player;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
 @Data
-@Builder
-@DynamoDbImmutable(builder = PlayerByGameStats.PlayerByGameStatsBuilder.class)
+@SuperBuilder
+@DynamoDbImmutable(builder = ModernIndividualSkater.ModernIndividualSkaterBuilder.class)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AdvancedIndividual {
+public class ModernIndividualSkater extends Player {
     private final int goals;
     private final int totalAssists;
     private final int firstAssists;
