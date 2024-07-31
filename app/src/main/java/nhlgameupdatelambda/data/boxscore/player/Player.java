@@ -20,6 +20,6 @@ public class Player {
     private final Integer sweaterNumber;
     private final Position position;
     private final Name name;
-    private final Integer pim;
+    private final int pim;
     private final String toi;
 }

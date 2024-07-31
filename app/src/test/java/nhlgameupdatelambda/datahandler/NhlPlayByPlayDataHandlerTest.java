@@ -248,7 +248,7 @@ public class NhlPlayByPlayDataHandlerTest {
     private void setupNhlData() {
         nhlData = NhlData.builder()
                 .nhlApiPlayByPlay(nhlApiPlayByPlay)
-                .DdbPlayByPlay(ddbPlaybyPlay)
+                .ddbPlayByPlay(ddbPlaybyPlay)
                 .build();
     }
 

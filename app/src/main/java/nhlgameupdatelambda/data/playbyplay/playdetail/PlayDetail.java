@@ -52,7 +52,7 @@ public class PlayDetail {
     private final Integer hitteePlayerId;
 
     // Penalty
-    private final String typeCode; // ToDo convert to Enum
+    private final PenaltyType typeCode;
     private final String descKey; // ToDo convert to Enum
     private final Integer duration;
     private final Integer committedByPlayerId;
