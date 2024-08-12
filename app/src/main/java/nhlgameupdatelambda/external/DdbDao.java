@@ -2,6 +2,7 @@ package nhlgameupdatelambda.external;
 
 import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.data.boxscore.Boxscore;
+import nhlgameupdatelambda.data.modern.individual.ModernIndividual;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -15,12 +16,15 @@ public class DdbDao {
 
     private final DynamoDbTable<Boxscore> boxscoreDdbTable;
     private final DynamoDbTable<PlayByPlay> playByPlayDdbTable;
+    private final DynamoDbTable<ModernIndividual> modernIndividualDynamoDbTable;
 
     @Inject
     public DdbDao(final DynamoDbTable<Boxscore> boxscoreDdbTable,
-                  final DynamoDbTable<PlayByPlay> playByPlayDdbTable) {
+                  final DynamoDbTable<PlayByPlay> playByPlayDdbTable,
+                  final DynamoDbTable<ModernIndividual> modernIndividualDynamoDbTable) {
         this.boxscoreDdbTable = boxscoreDdbTable;
         this.playByPlayDdbTable = playByPlayDdbTable;
+        this.modernIndividualDynamoDbTable = modernIndividualDynamoDbTable;
     }
 
     public void putBoxscore(final Boxscore boxscoreItem) {
@@ -71,6 +75,16 @@ public class DdbDao {
             final PlayByPlay playByPlayItem = playByPlayDdbTable.getItem(getItemRequest);
             log.info("Successfully retrieved record from PlayByPlayTable with GameId: " + gameId);
             return playByPlayItem;
+        } catch (final DynamoDbException e) {
+            throw e;
+        }
+    }
+
+    public void putModernIndividual(final ModernIndividual modernIndividualItem) {
+        try {
+            log.info("Putting record to ModernIndividualTable with GameId: " + modernIndividualItem.getId());
+            modernIndividualDynamoDbTable.putItem(modernIndividualItem);
+            log.info("Successfully stored record to BoxscoreTable with GameId: " + modernIndividualItem.getId());
         } catch (final DynamoDbException e) {
             throw e;
         }

@@ -2,6 +2,7 @@ package nhlgameupdatelambda.external;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nhlgameupdatelambda.data.boxscore.Boxscore;
+import nhlgameupdatelambda.data.modern.individual.ModernIndividual;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import org.junit.After;
 import org.junit.Before;
@@ -35,6 +36,8 @@ public class DdbDaoTest {
     private DynamoDbTable<Boxscore> mockBoxscoreTable;
     @Mock
     private DynamoDbTable<PlayByPlay> mockPlayByPlayTable;
+    @Mock
+    private DynamoDbTable<ModernIndividual> mockModernIndividualTable;
 
     private DdbDao underTest;
     private Boxscore actualBoxscore;
@@ -43,7 +46,7 @@ public class DdbDaoTest {
     @Before
     public void setUp() {
         gameId = 2023020900;
-        underTest = new DdbDao(mockBoxscoreTable, mockPlayByPlayTable);
+        underTest = new DdbDao(mockBoxscoreTable, mockPlayByPlayTable, mockModernIndividualTable);
     }
 
     @After

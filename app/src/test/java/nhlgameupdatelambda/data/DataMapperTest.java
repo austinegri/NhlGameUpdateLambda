@@ -3,6 +3,9 @@ package nhlgameupdatelambda.data;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import nhlgameupdatelambda.data.modern.individual.ModernIndividual;
+import nhlgameupdatelambda.data.modern.individual.ModernIndividualRoster;
+import nhlgameupdatelambda.data.modern.individual.PlayerByGameIndividualStats;
 import nhlgameupdatelambda.data.playbyplay.Play;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.data.playbyplay.PlayType;
@@ -11,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import software.amazon.awssdk.enhanced.dynamodb.DefaultAttributeConverterProvider;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.document.EnhancedDocument;
 
 import java.util.LinkedHashSet;
@@ -79,5 +83,15 @@ public class DataMapperTest {
         final String convertedString = enhancedDocument.getString("playByPlayDoc");
         final PlayByPlay convertedPlayByPlay = OBJECT_MAPPER.readValue(convertedString, PlayByPlay.class);
         assertThat(convertedPlayByPlay, notNullValue());
+    }
+
+    @Test
+    public void testModernIndividualTableSchema() throws JsonProcessingException {
+        TableSchema<ModernIndividualRoster> ModernIndividualRosterSchema =
+                TableSchema.fromImmutableClass(ModernIndividualRoster.class);
+        TableSchema<PlayerByGameIndividualStats> PlayerByGameIndividualStatsSchema =
+                TableSchema.fromImmutableClass(PlayerByGameIndividualStats.class);
+        TableSchema<ModernIndividual> ModernIndividualTableSchema =
+                TableSchema.fromImmutableClass(ModernIndividual.class);
     }
 }

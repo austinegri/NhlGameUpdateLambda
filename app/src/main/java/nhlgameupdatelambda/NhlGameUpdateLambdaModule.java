@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import nhlgameupdatelambda.data.boxscore.Boxscore;
+import nhlgameupdatelambda.data.modern.individual.ModernIndividual;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
 import nhlgameupdatelambda.datahandler.impl.NhlBoxscoreDataHandler;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
@@ -85,6 +86,20 @@ public class NhlGameUpdateLambdaModule {
         final String playByPlayTableName = System.getenv("playByPlayTableName");
         return enhancedClient.table(playByPlayTableName,
                 TableSchema.fromImmutableClass(PlayByPlay.class));
+    }
+
+    @Provides
+    @Singleton
+    public DynamoDbTable<ModernIndividual> providesModernStatDdbTable(final Region aws_region) {
+        final DynamoDbClient ddb = DynamoDbClient.builder()
+                .region(aws_region)
+                .build();
+        final DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(ddb)
+                .build();
+        final String individualStatTableName = System.getenv("individualStatsTableName");
+        return enhancedClient.table(individualStatTableName,
+                TableSchema.fromImmutableClass(ModernIndividual.class));
     }
 
     @Provides

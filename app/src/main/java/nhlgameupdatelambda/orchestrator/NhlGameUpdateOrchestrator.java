@@ -1,6 +1,7 @@
 package nhlgameupdatelambda.orchestrator;
 
 import lombok.extern.slf4j.Slf4j;
+import nhlgameupdatelambda.compute.impl.IndividualStats;
 import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class NhlGameUpdateOrchestrator {
 
     private final List<NhlDataHandler> nhlDataHandlers;
+    private final IndividualStats individualStats;
 
     @Inject
-    public NhlGameUpdateOrchestrator(final List<NhlDataHandler> nhlDataHandlers) {
+    public NhlGameUpdateOrchestrator(final List<NhlDataHandler> nhlDataHandlers, final IndividualStats individualStats) {
         this.nhlDataHandlers = nhlDataHandlers;
+        this.individualStats = individualStats;
     }
 
     public GameState update(final String gameId) {
@@ -41,6 +44,9 @@ public class NhlGameUpdateOrchestrator {
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+
+        individualStats.compute(nhlData);
+        individualStats.save(nhlData); // ToDo only compute and change in case of an update
 
         return gameStateResponses.stream()
                 .findFirst()

@@ -3,12 +3,14 @@ package nhlgameupdatelambda.data.modern.individual.player;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import nhlgameupdatelambda.data.boxscore.player.Player;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
-@Data
+@Getter
 @SuperBuilder
 @DynamoDbImmutable(builder = ModernIndividualGoalie.ModernIndividualGoalieBuilder.class)
 @Jacksonized
@@ -32,18 +34,22 @@ public class ModernIndividualGoalie extends Player {
 //    private int rushAttemptsAgainst; ToDo
 //    private int reboundAttemptsAgaints; ToDo
 
+    @DynamoDbIgnore
     public void incrementShotsAgainst() {
         shotsAgainst += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementSaves() {
         saves += 1;
     }
 
+    @DynamoDbIgnore
     public void updateSavePct() {
         savePct = (float) saves / shotsAgainst;
     }
 
+    @DynamoDbIgnore
     public void incrementGoalsAgainst() {
         goalsAgainst += 1;
     }

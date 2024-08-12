@@ -3,14 +3,21 @@ package nhlgameupdatelambda.data.modern.individual.player;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Value;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import nhlgameupdatelambda.data.boxscore.player.Player;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbIgnore;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 
-@Data
+//@Data
+@Getter
 @SuperBuilder
 @DynamoDbImmutable(builder = ModernIndividualSkater.ModernIndividualSkaterBuilder.class)
+//@DynamoDbBean
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,87 +51,107 @@ public class ModernIndividualSkater extends Player {
     private int faceoffsLost;
     private float faceoffPct;
 
+    @DynamoDbIgnore
     public void incrementFaceoffsWon() {
         faceoffsWon += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementFaceoffsLost() {
         faceoffsLost += 1;
     }
 
+    @DynamoDbIgnore
     public void updateFaceoffPct() {
         faceoffPct = (float) faceoffsWon / (faceoffsWon + faceoffsLost);
     }
 
+    @DynamoDbIgnore
     public void incrementShotsBlocked() {
         shotsBlocked += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementICF() {
         iCF += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementIFF() {
         iFF += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementShots() {
         shots += 1;
     }
 
+    @DynamoDbIgnore
     public void updateShootingPct() {
         shootingPct = (float) goals / shots;
     }
 
+    @DynamoDbIgnore
     public void incrementGoals() {
         goals += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementFirstAssists() {
         firstAssists += 1;
         incrementTotalAssists();
     }
 
+    @DynamoDbIgnore
     public void incrementSecondAssists() {
         secondAssists += 1;
         incrementTotalAssists();
     }
 
+    @DynamoDbIgnore
     public void incrementHits() {
         hits += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementHitsTaken() {
         hitsTaken += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementPim(final int minutes) {
         pim += minutes;
     }
 
+    @DynamoDbIgnore
     public void incrementPenaltiesDrawn() {
         penaltiesDrawn += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementMinors() {
         minor += 1;
         incrementTotalPenalties();
     }
 
+    @DynamoDbIgnore
     public void incrementMajors() {
         major += 1;
         incrementTotalPenalties();
     }
 
+    @DynamoDbIgnore
     public void incrementMisconducts() {
         misconduct += 1;
         incrementTotalPenalties();
     }
 
+    @DynamoDbIgnore
     public void incrementTakeaways() {
         takeaways += 1;
     }
 
+    @DynamoDbIgnore
     public void incrementGiveaways() {
         giveaways += 1;
     }

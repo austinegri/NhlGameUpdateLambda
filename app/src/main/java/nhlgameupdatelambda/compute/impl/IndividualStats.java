@@ -1,6 +1,7 @@
 package nhlgameupdatelambda.compute.impl;
 
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import nhlgameupdatelambda.compute.ModernStats;
 import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.boxscore.Boxscore;
@@ -17,7 +18,9 @@ import nhlgameupdatelambda.data.playbyplay.Play;
 import nhlgameupdatelambda.data.playbyplay.PlayType;
 import nhlgameupdatelambda.data.playbyplay.playdetail.PenaltyType;
 import nhlgameupdatelambda.data.playbyplay.playdetail.PlayDetail;
+import nhlgameupdatelambda.external.DdbDao;
 
+import javax.inject.Inject;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +28,15 @@ import java.util.stream.Collectors;
 
 import static nhlgameupdatelambda.data.playbyplay.PlayType.*;
 
+@Slf4j
 public class IndividualStats implements ModernStats {
+
+    private final DdbDao ddbDao;
+
+    @Inject
+    public IndividualStats(final DdbDao ddbDao) {
+        this.ddbDao = ddbDao;
+    }
 
     public void compute(final NhlData nhlData) {
         final Boxscore boxscore = nhlData.getNhlApiBoxscore();
@@ -54,6 +65,10 @@ public class IndividualStats implements ModernStats {
                 .build());
 
         addStatsToPlayer(plays, gamePlayers);
+    }
+
+    public void save(final NhlData nhlData) {
+        ddbDao.putModernIndividual(nhlData.getModernIndividual());
     }
 
     private ModernIndividualSkater boxscoreToModernIndividual(final Skater skater) {
@@ -159,9 +174,12 @@ public class IndividualStats implements ModernStats {
                 shooter.incrementIFF();
                 shooter.updateShootingPct();
 
-                goalie.incrementShotsAgainst();
-                goalie.incrementGoalsAgainst();
-                goalie.updateSavePct();
+                if (goalie != null) {
+                    // Empty net
+                    goalie.incrementShotsAgainst();
+                    goalie.incrementGoalsAgainst();
+                    goalie.updateSavePct();
+                }
                 if (a1 != null) {
                     a1.incrementFirstAssists();
                     if (a2 != null) {
@@ -179,7 +197,7 @@ public class IndividualStats implements ModernStats {
                 final var penaltyDrawer = skaters.get(detail.getDrawnByPlayerId());
                 final var penaltyType = detail.getTypeCode();
 
-                if(penaltyTaker == null) {
+                if (penaltyTaker == null) {
                     // Goalies could take penalties
                     continue;
                 }

@@ -279,6 +279,14 @@ public class TestData {
                             .scoringPlayerId(PLAYERID_7)
                             .goalieInNetId(GOALIEID_1)
                             .build())
+                    .build(),
+            Play.builder()
+                    .eventId(7)
+                    .typeDescKey(PlayType.GOAL)
+                    .details(PlayDetail.builder()
+                            // Empty Net
+                            .scoringPlayerId(PLAYERID_7)
+                            .build())
                     .build()));
 
     public static final LinkedHashSet<Play> HIT_PLAYS = new LinkedHashSet<Play>(List.of(

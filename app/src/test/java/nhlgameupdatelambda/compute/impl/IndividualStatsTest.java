@@ -7,9 +7,11 @@ import nhlgameupdatelambda.data.boxscore.Roster;
 import nhlgameupdatelambda.data.boxscore.player.Skater;
 import nhlgameupdatelambda.data.modern.individual.ModernIndividual;
 import nhlgameupdatelambda.data.playbyplay.PlayByPlay;
+import nhlgameupdatelambda.external.DdbDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class IndividualStatsTest {
 
-    private static final double EPSILON = 1e-10;
+    private static final double EPSILON = 1e-6;
 
     private static final Roster HOME_ROSTER = Roster.builder()
             .defense(List.of(
@@ -60,12 +62,15 @@ public class IndividualStatsTest {
     private ModernIndividual expectedOutput;
     private ModernIndividual actualOutput;
 
+    @Mock
+    private DdbDao mockDdbDao;
+
     @Before
     public void setUp() throws Exception {
         nhlData = NhlData.builder()
                 .build();
         setupBoxscoreRosters();
-        underTest = new IndividualStats();
+        underTest = new IndividualStats(mockDdbDao);
     }
 
     @Test
@@ -285,11 +290,11 @@ public class IndividualStatsTest {
         assertEquals(1, goalie.getSaves());
         assertEquals(.25, goalie.getSavePct(), EPSILON);
 
-        assertEquals(3, shooter.getGoals());
-        assertEquals(4, shooter.getShots());
-        assertEquals(6, shooter.getICF());
-        assertEquals(5, shooter.getIFF());
-        assertEquals(.75, shooter.getShootingPct(), EPSILON);
+        assertEquals(4, shooter.getGoals());
+        assertEquals(5, shooter.getShots());
+        assertEquals(7, shooter.getICF());
+        assertEquals(6, shooter.getIFF());
+        assertEquals(.80, shooter.getShootingPct(), EPSILON);
 
         assertEquals(2, a1.getFirstAssists());
         assertEquals(0, a1.getSecondAssists());

@@ -1,6 +1,7 @@
 package nhlgameupdatelambda.orchestrator;
 
 import com.google.common.collect.ImmutableList;
+import nhlgameupdatelambda.compute.impl.IndividualStats;
 import nhlgameupdatelambda.data.NhlData;
 import nhlgameupdatelambda.data.common.GameState;
 import nhlgameupdatelambda.datahandler.NhlDataHandler;
@@ -33,13 +34,15 @@ public class NhlGameUpdateOrchestratorTest {
     private NhlDataHandler mockNhlDataHandler;
     @Mock
     private NhlBoxscoreDataHandler mockNhlBoxscoreDataHandler;
+    @Mock
+    private IndividualStats mockIndividualStats;
 
     private NhlGameUpdateOrchestrator underTest;
     @Before
     public void setUp() throws Exception {
         nhlDataHandlers = ImmutableList.of(mockNhlDataHandler,
                 mockNhlBoxscoreDataHandler);
-        underTest = new NhlGameUpdateOrchestrator(nhlDataHandlers);
+        underTest = new NhlGameUpdateOrchestrator(nhlDataHandlers, mockIndividualStats);
     }
 
     @After
